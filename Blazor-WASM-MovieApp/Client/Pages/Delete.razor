@@ -1,0 +1,65 @@
+﻿@page "/delete/{Id:int}"
+@using Blazor_WASM_MovieApp.Models
+@using Blazor_WASM_MovieApp.Client.Pages.BaseComponents
+@inherits DeleteBase
+
+<h1 class="text-center">Delete Movie</h1>
+@if (movie == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+
+    <div class="d-flex justify-content-center">
+        <div>
+            <hr />
+            <dl class="row text-end">
+                <dt class="col-sm-4">
+                    Title
+                </dt>
+                <dd class="col-sm-6">
+                    @movie.Title
+                </dd>
+                <dt class="col-sm-4">
+                    Release Date
+                </dt>
+                <dd class="col-sm-6">
+
+                    @if (movie.ReleaseDate != null)
+                    {
+                        @movie.ReleaseDate.Value.ToString("dd'.'MM'.'yyyy")
+                    }
+                </dd>
+                <dt class="col-sm-4">
+                    Genre
+                </dt>
+                <dd class="col-sm-6">
+                    @foreach (var genre in movie.Genres)
+                    {
+                        @genre.Name <br />
+                    }
+
+                </dd>
+                <dt class="col-sm-4">
+                    Price
+                </dt>
+                <dd class="col-sm-6">
+                    @movie.Price
+                </dd>
+            </dl>
+
+            <div class="d-flex justify-content-center pe-1 ">
+                <EditForm Model="movie" OnSubmit="DeleteMovie">
+                    <InputNumber class="hidden" @bind-Value="movie.Id"></InputNumber>
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                    <a class="btn btn-primary" @onclick="@Cancel">Back to List</a>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+
+}
+@code {
+
+}

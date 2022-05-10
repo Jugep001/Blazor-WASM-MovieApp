@@ -1,0 +1,246 @@
+﻿@page "/details/{Id:int}"
+@using Blazor_WASM_MovieApp.Models
+@using Blazor_WASM_MovieApp.Client.Pages.BaseComponents
+@inherits DetailsBase
+
+@if (movie.ReleaseDate != null)
+{
+    <h1 class="text-center">@movie.Title <span>(@movie.ReleaseDate.Value.Year)</span></h1>
+}
+
+<div class="d-flex">
+    @if (movie.Image != null)
+    {
+        <div class="align-self-center">
+            <img src="images\\@movie.Image.ImageName" class="img-fluid" />
+        </div>
+    }
+
+
+
+    <div class="container-fluid">
+        <div class="d-flex justify-content-center">
+            <ul class="nav nav-tabs mt-2" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="detail-tab" data-bs-toggle="tab" data-bs-target="#detail" type="button" role="tab" aria-controls="detail" aria-selected="true">Detail</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="logs-tab" data-bs-toggle="tab" data-bs-target="#logs" type="button" role="tab" aria-controls="logs" aria-selected="false">Logs</button>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="detail-tab">
+                <hr />
+                <div class="ql-editor">
+                    @HtmlString
+                </div>
+
+                <div class="d-flex justify-content-evenly container">
+
+                    <div>
+                        <hr />
+
+                        <dl class="row text-end">
+                            <dt class="col-sm-4 pb-2">
+                                Title
+                            </dt>
+                            <dd class="col-sm-6 pb-2">
+                                @movie.Title
+                                @if (movie.IsDeleted)
+                                {
+                                    <span class="badge bg-danger ms-3">Deleted</span>
+                                }
+                            </dd>
+                            <dt class="col-sm-4 pb-2">
+                                Release Date
+                            </dt>
+                            <dd class="col-sm-6 pb-2">
+                                @if (movie.ReleaseDate != null)
+                                {
+                                    @movie.ReleaseDate.Value.ToString("dd'.'MM'.'yyyy")
+                                }
+                            </dd>
+                            <dt class="col-sm-4 pb-2">
+                                Genre
+                            </dt>
+                            <dd class="col-sm-6 pb-2">
+                                @if (movie.Genres != null)
+                                {
+                                    @foreach (var genre in movie.Genres)
+                                    {
+                                        @genre.Name <br />
+                                    }
+                                }
+
+
+                            </dd>
+                            <dt class="col-sm-4 pb-2">
+                                Price
+                            </dt>
+                            <dd class="col-sm-6 pb-2">
+                                @movie.Price
+                            </dd>
+                            <dt class="col-sm-4 pb-2">
+                                Rating
+                            </dt>
+                            <dd class="col-sm-6 pb-2">
+                                @movie.Rating
+                            </dd>
+                        </dl>
+                    </div>
+                    <div>
+                        <hr />
+                        <dl class="row text-end">
+
+
+                            @foreach (Credit credit in credits)
+                            {
+                                @if (credit.Function != null && functionName != credit.Function.FunctionName)
+                                {
+                                    <dt class="col-sm-4 pb-2">
+                                        @credit.Function.FunctionName
+                                    </dt>
+                                    functionName = credit.Function.FunctionName;
+
+                                    <dd class="col-sm-8 pb-2">
+                                        @foreach (Credit credit2 in credits)
+                                        {
+
+                                            if (credit2.Function != null && credit2.Function.FunctionName == credit.Function.FunctionName)
+                                            {
+
+                                                <div class="w-100">
+                                                    <span>
+                                                        @if (credit2.Person != null)
+                                                        {
+                                                            @credit2.Person.Vorname<text>&nbsp;</text>
+                                                            
+                                                            @credit2.Person.Name
+                                                        }
+
+                                                    </span>
+                                                    @if (credit2.Function.IsRoleRequired == true)
+                                                    {
+                                                        <span>
+                                                            (@credit2.Role)
+                                                        </span>
+                                                    }
+
+
+                                                </div>
+
+
+
+
+
+
+                                            }
+
+
+                                        }
+                                    </dd>
+
+                                }
+
+
+                            }
+
+                        </dl>
+                    </div>
+
+                </div>
+                <div class="d-flex justify-content-center pe-1 ">
+                    <div class="p-1">
+                        <a href="edit/@movie.Id" class="btn btn-primary">Edit</a>
+                    </div>
+                    <div class="p-1">
+                        <a class="btn btn-danger" @onclick="@DeleteMovie">Delete</a>
+                    </div>
+                    <div class="p-1">
+                        <a class="btn btn-primary" @onclick="@Cancel">Back to List</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="logs" role="tabpanel" aria-labelledby="logs-tab">
+                @if (movie.Changelogs != null)
+                {
+
+                    <div>
+                        <hr />
+                        <table class="table table-hover table-striped bg-white">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>
+                                        CreatedAt
+                                    </th>
+
+                                    <th>
+                                        CreatedBy
+                                    </th>
+                                    <th>
+                                        UpdatedAt
+                                    </th>
+                                    <th>
+                                        UpdatedBy
+                                    </th>
+                                    <th>
+                                        DeletedAt
+                                    </th>
+                                    <th>
+                                        DeletedBy
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Changelog log in movie.Changelogs)
+                                {
+                                    <tr>
+                                        <td>
+                                            @log.CreatedAt
+                                        </td>
+
+                                        <td>
+                                            @log.CreatedBy
+                                        </td>
+                                        <td>
+                                            @log.UpdatedAt
+                                        </td>
+                                        <td>
+                                            @log.UpdatedBy
+                                        </td>
+                                        <td>
+                                            @if (log.DeletedAt != DateTime.MinValue)
+                                            {
+                                                @log.DeletedAt
+                                            }
+                                        </td>
+                                        <td>
+                                            @log.DeletedBy
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                }
+                <div class="d-flex justify-content-center pe-1 ">
+
+                    <div class="p-1">
+                        <a class="btn btn-primary" @onclick="@Cancel">Back to List</a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+}

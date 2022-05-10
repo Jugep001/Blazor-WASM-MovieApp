@@ -1,0 +1,59 @@
+﻿@using Blazor_WASM_MovieApp.Exceptions
+@implements IErrorComponent
+@inherits LayoutComponentBase
+
+<NavMenu />
+
+<main class="container-fluid">
+    <div class="content px-4">
+        @if (isErrorActive)
+        {
+            <div class="alert alert-danger" role="alert">
+
+                <ul>
+                    @foreach (var err in ErrorList)
+                    {
+                        <li>
+
+                            <p>@err.ErrorMessage</p>
+
+                        </li>
+
+                    }
+                </ul>
+
+            </div>
+        }
+        <CascadingValue Value="this" Name="ErrorComponent">
+                @Body
+        </CascadingValue>
+    </div>
+
+</main>
+
+
+
+@code {
+    @inject NavigationManager NavigationManager;
+
+    bool isErrorActive;
+    List<ErrorItem> ErrorList;
+    string? message = null;
+
+
+    public void ShowError(List<ErrorItem> ErrorList)
+    {
+        this.isErrorActive = true;
+        this.ErrorList = ErrorList;
+        StateHasChanged();
+
+    }
+
+    public void HideError()
+    {
+        isErrorActive = false;
+        StateHasChanged();
+    }
+
+
+}

@@ -1,0 +1,103 @@
+﻿@using Blazor_WASM_MovieApp.Models
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Blazor-Movie-App</a>
+        <button class="navbar-toggler @NavButtonCssClass" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-label="Toggle navigation" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse @NavBarCssClass" id="navbarCollapse" @onclick="ToggleNavMenu">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <NavLink class="nav-link" Match="NavLinkMatch.All" @onclick="HandleClickIndex">
+                        <span class="iconify-inline" data-icon="bx:camera-movie" style="font-size: 24px;"></span>Movies
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="genreIndex" @onclick="HandleClickGenreIndex">
+                        <span class="iconify-inline" data-icon="bxs:camera-movie" style="font-size: 24px;"></span> Genres
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="personIndex" @onclick="HandleClickPersonIndex">
+                        <span class="iconify-inline" data-icon="mdi:human-female-female" style="font-size: 24px;"></span> People
+                    </NavLink>
+                </li>
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="ManageAccounts" @onclick="HandleClickManageAccounts">
+                            <span class="iconify-inline" data-icon="ant-design:user-outlined" style="font-size: 24px;"></span> Users
+                        </NavLink>
+                    </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <LoginDisplay />
+
+
+
+    <EditForm Model="search" OnSubmit="HandleSubmit">
+        <AuthorizeView Roles="admin, writer, reader" Context="authContext">
+            <div class="d-flex me-3">
+                <div class="">
+
+                    <InputText type="text" class="form-control-sm" name="searchString" placeholder="Search" @bind-Value="search.SearchString" />
+
+                </div>
+
+                <div>
+                    <input type="submit" value="Search" class="btn-sm btn-secondary ms-1" />
+                </div>
+
+
+            </div>
+        </AuthorizeView>
+    </EditForm>
+
+
+
+</nav>
+
+@code {
+    @inject NavigationManager NavigationManager;
+
+    protected Search search = new Search();
+    private bool collapseNavMenu = true;
+    private string? NavBarCssClass => collapseNavMenu ? null : "show";
+    private string? NavButtonCssClass => collapseNavMenu ? "collapsed" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void HandleClickGenreIndex()
+    {
+        NavigationManager.NavigateTo("/genreIndex", true);
+    }
+
+    private void HandleClickIndex()
+    {
+        NavigationManager.NavigateTo("", true);
+    }
+
+    private void HandleClickPersonIndex()
+    {
+        NavigationManager.NavigateTo("/personIndex", true);
+    }
+    private void HandleClickManageAccounts()
+    {
+        NavigationManager.NavigateTo("/ManageAccounts", true);
+    }
+    private void HandleSubmit()
+    {
+        if (NavigationManager.Uri == NavigationManager.BaseUri)
+        {
+            NavigationManager.NavigateTo($"/loading/{search.SearchString}");
+        }
+        NavigationManager.NavigateTo($"/{search.SearchString}");
+    }
+}
