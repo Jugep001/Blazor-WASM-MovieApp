@@ -12,7 +12,7 @@ namespace Blazor_WASM_MovieApp.Client.Services
         public Task<string> GetFirstTenWords(string description);
         public List<MarkupString> GetHighlightedDescription(string description, string searchString);
         public Task<string> AddMovie(Movie movie, IBrowserFile? loadedImage, IBrowserFile? loadedThumbnailImage, List<int> GenreIds);
-        public Task UpdateMovie(Movie movie, IBrowserFile? loadedImage, IBrowserFile? loadedThumbnailImage, List<int> GenreIds, List<Credit> DeleteCreditList, bool shouldDelete, string currentUser);
+        public Task<string> UpdateMovie(Movie movie, IBrowserFile? loadedImage, IBrowserFile? loadedThumbnailImage, List<int> GenreIds, List<Credit> DeleteCreditList, bool shouldDelete, string currentUser);
         public Task DeleteMovie(int id, string currentUser);
     }
 }

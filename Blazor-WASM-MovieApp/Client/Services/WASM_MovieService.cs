@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
+using System.Net.Http;
 
 namespace Blazor_WASM_MovieApp.Client.Services
 {
@@ -12,7 +13,6 @@ namespace Blazor_WASM_MovieApp.Client.Services
     {
         private readonly HttpClient _httpClient;
         private readonly WASM_MovieRepository _movieRepository;
-        string rootpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 
         public WASM_MovieService(HttpClient httpClient, WASM_MovieRepository movieRepository)
         {
@@ -92,7 +92,7 @@ namespace Blazor_WASM_MovieApp.Client.Services
             await _httpClient.DeleteAsync($"/DeleteMovie/{id}/{currentUser}");
         }
 
-        public async Task UpdateMovie(Movie movie, IBrowserFile? loadedImage, IBrowserFile? loadedThumbnailImage, List<int> genreIds, List<Credit> deleteCreditList, bool shouldDelete, string currentUser)
+        public async Task<string> UpdateMovie(Movie movie, IBrowserFile? loadedImage, IBrowserFile? loadedThumbnailImage, List<int> genreIds, List<Credit> deleteCreditList, bool shouldDelete, string currentUser)
         {
             Image image = null;
             if (loadedImage != null)
@@ -103,8 +103,25 @@ namespace Blazor_WASM_MovieApp.Client.Services
                 content.Add(content: imgContent, "\"files\"", loadedImage.Name);
                 content.Add(thumbImgContent, "\"files\"", loadedThumbnailImage.Name);
 
-                HttpResponseMessage? result = await _httpClient.PostAsync("/AddImage", content);
-                image = await result.Content.ReadFromJsonAsync<Image>();
+                try
+                {
+                    HttpResponseMessage? result = await _httpClient.PostAsync("AddImage", content);                  
+                    image = await result.Content.ReadFromJsonAsync<Image>();
+                }
+                catch(TaskCanceledException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch(HttpRequestException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
+
 
 
             }
@@ -125,6 +142,7 @@ namespace Blazor_WASM_MovieApp.Client.Services
             });
 
             var response = await _httpClient.PutAsJsonAsync($"/UpdateMovie", json);
+            return response.StatusCode.ToString();
         }
     }
 }

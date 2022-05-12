@@ -245,7 +245,6 @@ namespace Blazor_WASM_MovieApp.Server.Controllers
         public async Task<IActionResult> AddImage([FromForm] IEnumerable<IFormFile> files)
         {
             
-
             Image image = await _movieService.AddImage(files);
 
             return Ok(image);

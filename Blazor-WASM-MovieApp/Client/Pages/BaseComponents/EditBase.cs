@@ -121,13 +121,14 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
 
         }
 
-        protected async void UpdateMovie()
+        protected async Task UpdateMovie()
         {
             try
             {
                 foreach (Credit credit in creditList)
                 {
-                    
+                    credit.Person = null;
+                    credit.Function = null;
                     _creditService.AddCredit(credit);
                 }
 
@@ -135,8 +136,8 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
                 {
                     movie.Description = StripHTML(movie.Description);
                 }
-                var authstate = await _getAuthenticationState.GetAuthenticationStateAsync();
-                _movieService.UpdateMovie(movie, loadedImage, loadedThumbnailImage, GenreIds, DeleteCreditList, shouldDelete, "admin");
+                //var authstate = await _getAuthenticationState.GetAuthenticationStateAsync();
+                var response = await _movieService.UpdateMovie(movie, loadedImage, loadedThumbnailImage, GenreIds, DeleteCreditList, shouldDelete, "admin");
                 
                 ErrorComponent.HideError();
                 _navigationManager.NavigateTo("", true);

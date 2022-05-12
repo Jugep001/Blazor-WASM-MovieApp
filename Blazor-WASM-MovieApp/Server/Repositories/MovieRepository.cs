@@ -43,6 +43,23 @@ namespace Blazor_WASM_MovieApp.Repositories
 
         public async void AddMovie(Movie movie, Image image, List<int> genreIds, string currentUser)
         {
+            if (movie.Description != null || movie.Description != "")
+            {
+                movie.ShortDescription = String.Empty;
+                var shortDescriptionList = movie.Description.Split().Take(10);
+                var lastItem = shortDescriptionList.Last();
+                foreach (var shortDescription in shortDescriptionList)
+                {
+                    if (shortDescription.Equals(lastItem))
+                    {
+                        movie.ShortDescription += lastItem;
+                        break;
+                    }
+                    movie.ShortDescription += shortDescription + " ";
+
+                }
+                movie.ShortDescription += "...";
+            }
 
             if (image != null)
             {
@@ -106,21 +123,45 @@ namespace Blazor_WASM_MovieApp.Repositories
 
         public async void UpdateMovie(Movie movie, Image image, List<int> genreIds, List<Credit> deleteCreditList, bool shouldDelete, string currentUser)
         {
+            var tempMovie = _dbContext.Movies.Include(x => x.Genres).Include(x => x.Image).Include(x => x.Changelogs).Where(x => x.Id == movie.Id).First();
+            tempMovie.Title = movie.Title;
+            tempMovie.Description = movie.Description;
+            tempMovie.Price = movie.Price;
+            tempMovie.Rating = movie.Rating;
+            tempMovie.ReleaseDate = movie.ReleaseDate;
 
+            if (tempMovie.Description != null || tempMovie.Description != "")
+            {
+                tempMovie.ShortDescription = String.Empty;
+                var shortDescriptionList = tempMovie.Description.Split().Take(10);
+                var lastItem = shortDescriptionList.Last();
+                foreach (var shortDescription in shortDescriptionList)
+                {
+                    if (shortDescription.Equals(lastItem))
+                    {
+                        tempMovie.ShortDescription += shortDescription;
+                        break;
+                    }
+                    else
+                    {
+                        tempMovie.ShortDescription += shortDescription + " ";
+                    }                  
 
-
+                }
+                tempMovie.ShortDescription += "...";
+            }
             if (image != null)
             {
-          
-                    movie.Image = image;               
+
+                tempMovie.Image = image;
 
             }
             if (shouldDelete == true)
             {
-                File.Delete(movie.Image.Path);
-                File.Delete(movie.Image.ThumbnailPath);
-                _dbContext.Images.Remove(movie.Image);
-                movie.Image = null;
+                File.Delete(tempMovie.Image.Path);
+                File.Delete(tempMovie.Image.ThumbnailPath);
+                _dbContext.Images.Remove(tempMovie.Image);
+                tempMovie.Image = null;
             }
 
             if (deleteCreditList.Count != 0)
@@ -130,8 +171,7 @@ namespace Blazor_WASM_MovieApp.Repositories
                     _dbContext.Credits.Remove(credit);
                 }
             }
-            //movie.Genres?.Clear();
-            var tempMovie = _dbContext.Movies.Include(x => x.Genres).Include(x => x.Changelogs).Where(x => x.Id == movie.Id).First();
+
             tempMovie.Genres?.Clear();
             _dbContext.Movies.Update(tempMovie);
             _dbContext.SaveChanges();
@@ -139,7 +179,7 @@ namespace Blazor_WASM_MovieApp.Repositories
             {
                 var Genre = (from genre in _dbContext.Genres where genreId == genre.Id select genre).First();
                 tempMovie.Genres?.Add(Genre);
-                
+
             }
             _dbContext.Movies.Update(tempMovie);
             _dbContext.SaveChanges();
@@ -155,9 +195,9 @@ namespace Blazor_WASM_MovieApp.Repositories
             IndexWriter writer = new IndexWriter(indexDir, indexConfig);
 
             Document doc = new Document();
-            doc.Add(new StringField("Id", movie.Id.ToString(), Field.Store.YES));
-            doc.Add(new TextField("Title", movie.Title, Field.Store.YES));
-            doc.Add(new TextField("Description", movie.Description, Field.Store.YES));
+            doc.Add(new StringField("Id", tempMovie.Id.ToString(), Field.Store.YES));
+            doc.Add(new TextField("Title", tempMovie.Title, Field.Store.YES));
+            doc.Add(new TextField("Description", tempMovie.Description, Field.Store.YES));
             if (movie.Genres != null)
             {
                 foreach (Genre genre in movie.Genres)
@@ -165,7 +205,7 @@ namespace Blazor_WASM_MovieApp.Repositories
                     doc.Add(new TextField("Genre", genre.Name, Field.Store.YES));
                 }
             }
-            writer.UpdateDocument(new Term("Id", movie.Id.ToString()), doc);
+            writer.UpdateDocument(new Term("Id", tempMovie.Id.ToString()), doc);
 
             writer.Dispose();
         }
@@ -197,7 +237,7 @@ namespace Blazor_WASM_MovieApp.Repositories
 
             var imgStream = files.ElementAt(0).OpenReadStream();
             var thumbImgStream = files.ElementAt(1).OpenReadStream();
-            await using FileStream fs = new(path, FileMode.Create);          
+            await using FileStream fs = new(path, FileMode.Create);
             await imgStream.CopyToAsync(fs);
             await using FileStream fs2 = new(thumbnailPath, FileMode.Create);
             await thumbImgStream.CopyToAsync(fs2);

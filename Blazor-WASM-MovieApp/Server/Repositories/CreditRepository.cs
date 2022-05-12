@@ -16,6 +16,8 @@ namespace Blazor_WASM_MovieApp.Repositories
         {
             if (_dbContext.Movies.Any(movie => movie.Credits.Contains(credit)))
             {
+                _dbContext.Update(credit);
+                _dbContext.SaveChanges();
                 return;
             }
             _dbContext.Add(credit);

@@ -236,7 +236,7 @@ namespace Blazor_WASM_MovieApp.Models
                                 Description = "Im Verlauf von zwölf Jahren begegnen sich in größeren Abständen ein Mann und eine Frau in New York, wobei sich ihre Gespräche und Dispute um Freundschaft, " +
                                               "Liebe und Sex allmählich doch als tragfähige Basis für eine Ehe erweisen. Eine von hervorragenden Darstellern, pointierten Dialogen und einer behutsam-zurückhaltenden " +
                                               "Inszenierung geprägte Komödie, die mit fröhlichem Witz und viel Humor einen ebenso amüsanten wie hintergründig-besinnlichen Kosmos menschlichen Miteinanders entwirft. - Sehenswert ab 16.",
-                                ShortDescription = "Im Verlauf von zwölf Jahren <br /> begegnen sich in größeren Abständen...",
+                                ShortDescription = "Im Verlauf von zwölf Jahren begegnen sich in größeren Abständen...",
                                 Credits = new List<Credit>
                                 {
                             new Credit()
@@ -270,7 +270,7 @@ namespace Blazor_WASM_MovieApp.Models
                                 Description = "Drei Pseudo-Wissenschaftler bekämpfen erfolgreich sich manifestierende Geister aus dem Sumerer-Reich. " +
                                               "Die erstaunliche Perfektion der Spezial-Effekte steht in umgekehrtem Verhältnis zur Intelligenz der Story und Dramaturgie. " +
                                               "Eine sich verselbständigende Trickschau, deren beabsichtigte Komik nur schwach zu ahnen ist; immerhin unterhaltsam, wenn auch durch die deutsche Synchronisation zusätzlich belastet. - Ab 12.",
-                                ShortDescription = "Drei Pseudo-Wissenschaftler bekämpfen erfolgreich sich <br /> manifestierende Geister aus dem Sumerer-Reich....",
+                                ShortDescription = "Drei Pseudo-Wissenschaftler bekämpfen erfolgreich sich manifestierende Geister aus dem Sumerer-Reich....",
                                 Credits = new List<Credit>
                                 {
                             new Credit()
@@ -305,7 +305,7 @@ namespace Blazor_WASM_MovieApp.Models
                                 Description = "Die drei geisterjagenden Pseudowissenschaftler, die bereits 1984 in \"Ghostbusters - Die Geisterjäger\" erfolgreich Geister aus dem Sumerer-Reich bekämpften" +
                                               ", sind dieses Mal im Einsatz gegen einen mittelalterlichen Ritter, der es leid ist, in ein Gemälde gebannt zu sein, " +
                                               "sowie gegen Unmengen bösartigen Schleims. Eine ideenarme, humorlose Fortsetzung der beliebten Anti-Geister-Geschichte. - Ab 14.",
-                                ShortDescription = "Die drei geisterjagenden Pseudowissenschaftler, die <br /> bereits 1984 in \"Ghostbusters - Die Geisterjäger\"...",
+                                ShortDescription = "Die drei geisterjagenden Pseudowissenschaftler, die bereits 1984 in \"Ghostbusters - Die Geisterjäger\"...",
                                 Credits = new List<Credit>
                                 {
                             new Credit()
@@ -341,7 +341,7 @@ namespace Blazor_WASM_MovieApp.Models
                                               "Nur durch die Mithilfe eines versoffenen Hilfssheriffs, eines kauzigen Alten und eines jungen Scharfschützen kann die Lage bereinigt werden. " +
                                               "Herausragender Western von Howard Hawks, der die einfache, aber spannende Story mit professioneller Gelassenheit und ironischen Zwischentönen inszeniert. " +
                                               "Die Figurenzeichnung ist brillant. Das Thema wurde vom selben Regisseur später in den Filmen \"El Dorado\" (1966) und \"Rio Lobo\" (1970) variiert. - Ab 14.",
-                                ShortDescription = "Sheriff John Chance gerät bei <br /> der Festnahme eines Mörders in Bedrängnis...",
+                                ShortDescription = "Sheriff John Chance gerät bei der Festnahme eines Mörders in Bedrängnis...",
                                 Credits = new List<Credit>
                                 {
                             new Credit()

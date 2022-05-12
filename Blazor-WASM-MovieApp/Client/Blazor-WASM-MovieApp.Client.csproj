@@ -31,8 +31,4 @@
     <ProjectReference Include="..\Shared\Blazor-WASM-MovieApp.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\thumbnails\" />
-  </ItemGroup>
-
 </Project>
