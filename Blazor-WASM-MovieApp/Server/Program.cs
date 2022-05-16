@@ -4,10 +4,15 @@ using Blazor_WASM_MovieApp.Models;
 using Blazor_WASM_MovieApp.Repositories;
 using Blazor_WASM_MovieApp.Services;
 using Blazor_WASM_MovieApp.Validators;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Configuration;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +25,29 @@ builder.Services.AddResponseCompression(opts =>
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
 });
 builder.Services.AddDbContext<BlazorMovieContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MDB")));
-
-builder.Services.AddDefaultIdentity<IdentityUser>()
-    .AddRoles<IdentityRole>()
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<BlazorMovieContext>();
+
+Configuration config =
+                System.Configuration.ConfigurationManager.OpenExeConfiguration(
+                ConfigurationUserLevel.None) as Configuration;
+
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                .GetBytes(builder.Configuration.GetSection("JWTSettings:securityKey").Value)),
+    };
+});
 
 builder.Services.AddTransient<MovieService>();
 builder.Services.AddTransient<GenreService>();
@@ -44,6 +68,7 @@ builder.Services.AddTransient<UserManager<IdentityUser>>();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
 var app = builder.Build();
+
 
 using (var scope = app.Services.CreateScope())
 {
@@ -74,6 +99,12 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.MapRazorPages();
 app.MapControllers();

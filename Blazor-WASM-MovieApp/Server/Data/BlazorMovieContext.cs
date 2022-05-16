@@ -1,11 +1,12 @@
 ﻿using Blazor_WASM_MovieApp.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blazor_WASM_MovieApp.Data
 {
-    public class BlazorMovieContext : IdentityDbContext
+    public class BlazorMovieContext : IdentityDbContext<IdentityUser>
     {
         public BlazorMovieContext(DbContextOptions<BlazorMovieContext> options)
            : base(options)

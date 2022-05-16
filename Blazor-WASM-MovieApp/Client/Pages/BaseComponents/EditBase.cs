@@ -54,6 +54,7 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
         protected bool bClearInputFile = false;
         protected bool shouldDelete = false;
         protected bool shouldRender = true;
+        protected bool isErrorActive = false;
         protected int currentIndex;
 
         protected SearchPeople searchPeople = new SearchPeople();
@@ -96,8 +97,8 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
             {
 
                 ErrorList = ex.ExceptionMessageList;
-                ErrorComponent.ShowError(ErrorList);
-
+                isErrorActive = true;
+                shouldRender = true;
             }
 
 
@@ -140,7 +141,7 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
                 var response = await _movieService.UpdateMovie(movie, loadedImage, loadedThumbnailImage, GenreIds, DeleteCreditList, shouldDelete, "admin");
                 
                 ErrorComponent.HideError();
-                _navigationManager.NavigateTo("", true);
+                _navigationManager.NavigateTo("");
 
             }
             catch (BusinessException ex)
@@ -304,6 +305,12 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
             return Regex.Replace(input, "<.*?>", String.Empty);
         }
 
+        public async Task RestoreMovie()
+        {
+            await _movieService.RestoreMovie(movie, "");
+            _navigationManager.NavigateTo("");
+        }
+
         protected void Refresh()
         {
             shouldRender = true;
@@ -317,7 +324,7 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
         {
 
 
-            _navigationManager.NavigateTo("", true);
+            _navigationManager.NavigateTo("");
             ErrorComponent.HideError();
 
         }

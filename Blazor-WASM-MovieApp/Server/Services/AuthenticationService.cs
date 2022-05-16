@@ -1,8 +1,10 @@
 ﻿using Blazor_WASM_MovieApp.Exceptions;
 using Blazor_WASM_MovieApp.Models;
 using Blazor_WASM_MovieApp.Repositories;
+using Blazor_WASM_MovieApp.Shared.Models;
 using Blazor_WASM_MovieApp.Validators;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Blazor_WASM_MovieApp.Services
 {
@@ -30,22 +32,27 @@ namespace Blazor_WASM_MovieApp.Services
             return _authenticationRepository.GetUser(id);
         }
 
-        public void AddUser(IdentityUser user, AuthInput authInput, string role)
+        public void UpdateUser(AuthInput authInput)
         {
-            errors = new List<ErrorItem>();
-            _authInputValidator.ValidateAndThrowBusinessException(authInput);
-            _authenticationRepository.AddUser(user, role);
+            _authenticationRepository.UpdateUser(authInput);
         }
 
-        public void UpdateUser(IdentityUser user, AuthInput authInput)
+        public void DeleteUser(string id)
         {
-            _authenticationRepository.UpdateUser(user, authInput);
+            _authenticationRepository.DeleteUser(id);
         }
 
-        public void DeleteUser(IdentityUser user)
+        public async Task<AuthInput> Login(AuthInput authInput)
         {
-            _authenticationRepository.DeleteUser(user);
+            return await _authenticationRepository.Login(authInput);
         }
+
+        public async Task Register(AuthInput authInput)
+        {
+            await _authenticationRepository.Register(authInput);
+        }
+
+
 
     }
 }

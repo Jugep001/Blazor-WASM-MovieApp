@@ -23,13 +23,31 @@ namespace Blazor_WASM_MovieApp.Services
 
         public void AddPerson(Person person)
         {
+            errors = new List<ErrorItem>();
             _personValidator.ValidateAndThrowBusinessException(person);
+            
+
+            if (_personRepository.PersonExist(person.Vorname,person.Name))
+            {
+                errors.Add(new ErrorItem("Name", "Diese Person existiert bereits!"));
+                throw new BusinessException(errors);
+            }
+
             _personRepository.AddPerson(person);
         }
 
         public void UpdatePerson(Person person)
         {
+            errors = new List<ErrorItem>();
             _personValidator.ValidateAndThrowBusinessException(person);
+
+
+            if (_personRepository.PersonExist(person.Vorname, person.Name, person.Id))
+            {
+                errors.Add(new ErrorItem("Name", "Diese Person existiert bereits!"));
+                throw new BusinessException(errors);
+            }
+
             _personRepository.UpdatePerson(person);
         }
 

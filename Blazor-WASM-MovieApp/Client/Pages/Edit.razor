@@ -10,6 +10,26 @@
 <h1 class="text-center">Edit Movie</h1>
 
 <hr />
+
+@if (isErrorActive)
+{
+    <div class="alert alert-danger" role="alert">
+
+        <ul class="list-unstyled">
+            @foreach (var err in ErrorList)
+            {
+                <li>
+
+                    <p>@err.ErrorMessage</p>
+
+                </li>
+
+            }
+        </ul>
+
+    </div>
+}
+
 <div class="d-flex justify-content-center">
 
     <div class="col-md-4 ">
@@ -136,7 +156,7 @@
                 <AuthorizeView Roles="admin" Context="authContext">
                     @if (movie.IsDeleted)
                     {
-                        <a class="btn btn-primary" href="/restore/@movie.Id">Restore</a>
+                        <a class="btn btn-primary" @onclick="@RestoreMovie">Restore</a>
                     }
                 </AuthorizeView>
                 <button type="button" class="btn btn-danger" @onclick="@Cancel">Cancel</button>

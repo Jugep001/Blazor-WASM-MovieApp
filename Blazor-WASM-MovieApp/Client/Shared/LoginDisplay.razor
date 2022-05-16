@@ -1,17 +1,17 @@
-﻿@*<AuthorizeView>
+﻿@using Microsoft.AspNetCore.Components.Authorization
+<AuthorizeView>
     <Authorized>
         <span class="text-light">@context.User.Identity?.Name</span>
 
-        <form method="post" action="Identity/Account/Logout">
-            <button type="submit" class="nav-link btn btn-link text-light"><span class="iconify" data-icon="clarity:logout-line" data-width="35" data-height="35"></span></button>
-        </form>
+        <a class="nav-link btn btn-link text-light" href="logout"><span class="iconify" data-icon="clarity:logout-line" data-width="35" data-height="35"></span></a>
+
 
     </Authorized>
     <NotAuthorized>
         <div class="d-inline-flex nav-item">
 
-            <a class="text-light me-3 text-decoration-none" href="Identity/Account/Login">Login</a>
+            <a class="text-light me-3 text-decoration-none" href="Login">Login</a>
 
         </div>
     </NotAuthorized>
-</AuthorizeView>*@
+</AuthorizeView>

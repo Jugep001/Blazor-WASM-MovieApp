@@ -1,0 +1,65 @@
+﻿@page "/EditUser/{Id}"
+@using Blazor_WASM_MovieApp.Client.Pages.BaseComponents
+@inherits EditUserBase
+
+
+<h1 class="text-center">Edit User</h1>
+<hr />
+<div class="d-flex justify-content-center">
+
+    @if(User == null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        <div class="col-md-4 ">
+        <EditForm Model="User" OnValidSubmit="UpdateUser">
+
+            <div class="form-group mt-3">
+                <label class="control-label">Username</label>
+                <InputText @bind-Value="User.UserName" class="form-control" />
+
+            </div>
+
+            <div class="form-group mt-3">
+                <label class="control-label">Email</label>
+                <InputText @bind-Value="User.Email" class="form-control" />
+
+            </div>
+
+            <div class="form-group mt-3">
+                <label class="control-label">PhoneNumber</label>
+                <InputText @bind-Value="User.PhoneNumber" class="form-control" />
+
+            </div>
+
+            <div class="form-group mt-3">
+                <label class="control-label">New Password</label>
+                <InputText type="password" @bind-Value="authInput.Password" class="form-control" />
+
+            </div>
+
+            <div class="form-group mt-3">
+                <label class="control-label">Confirm new Password</label>
+                <InputText type="password" @bind-Value="authInput.ConfirmPassword" class="form-control" />
+
+            </div>
+
+            
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="button" class="btn btn-danger" @onclick="Cancel">Cancel</button>
+            </div>
+
+        </EditForm>
+
+    </div>
+    }
+    
+</div>
+
+@code {
+
+}

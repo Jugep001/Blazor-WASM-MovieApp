@@ -114,8 +114,10 @@
                                                     <span>
                                                         @if (credit2.Person != null)
                                                         {
-                                                            @credit2.Person.Vorname<text>&nbsp;</text>
-                                                            
+                                                            @credit2.Person.Vorname
+
+                                                            <text>&nbsp;</text>
+
                                                             @credit2.Person.Name
                                                         }
 
@@ -154,9 +156,12 @@
                     <div class="p-1">
                         <a href="edit/@movie.Id" class="btn btn-primary">Edit</a>
                     </div>
-                    <div class="p-1">
-                        <a class="btn btn-danger" @onclick="@DeleteMovie">Delete</a>
-                    </div>
+                    @if (!movie.IsDeleted)
+                    {
+                        <div class="p-1">
+                            <a class="btn btn-danger" @onclick="@DeleteMovie">Delete</a>
+                        </div>
+                    }
                     <div class="p-1">
                         <a class="btn btn-primary" @onclick="@Cancel">Back to List</a>
                     </div>

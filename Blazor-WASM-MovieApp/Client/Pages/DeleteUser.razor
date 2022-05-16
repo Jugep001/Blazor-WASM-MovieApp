@@ -1,0 +1,40 @@
+﻿@page "/DeleteUser/{Id}"
+@using Blazor_WASM_MovieApp.Client.Pages.BaseComponents
+@inherits DeleteUserBase
+
+<h1 class="text-center">Do you want to delete this User?</h1>
+
+<div class="d-flex justify-content-center">
+    <div>
+        @if (User == null)
+        {
+            <p>Loading...</p>
+        }
+        else
+        {
+            <hr />
+            <dl class="row text-end">
+                <dt class="col-sm-4">
+                    Username
+                </dt>
+                <dd class="col-sm-7">
+                    @User.UserName
+                </dd>
+
+            </dl>
+
+            <div class="d-flex justify-content-center pe-1 ">
+                <EditForm Model="User" OnSubmit="DeleteUserById">
+                    <InputText class="hidden" @bind-Value="User.Id"></InputText>
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                    <a class="btn btn-primary" href="/">Back to List</a>
+                </EditForm>
+            </div>
+        }
+
+    </div>
+</div>
+
+@code {
+
+}

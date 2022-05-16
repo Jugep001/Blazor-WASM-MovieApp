@@ -23,12 +23,13 @@
                         <span class="iconify-inline" data-icon="mdi:human-female-female" style="font-size: 24px;"></span> People
                     </NavLink>
                 </li>
+                <AuthorizeView Roles="admin">
                     <li class="nav-item">
                         <NavLink class="nav-link" href="ManageAccounts" @onclick="HandleClickManageAccounts">
                             <span class="iconify-inline" data-icon="ant-design:user-outlined" style="font-size: 24px;"></span> Users
                         </NavLink>
                     </li>
-
+                </AuthorizeView>
             </ul>
 
         </div>
@@ -76,21 +77,21 @@
 
     private void HandleClickGenreIndex()
     {
-        NavigationManager.NavigateTo("/genreIndex", true);
+        NavigationManager.NavigateTo("/genreIndex");
     }
 
     private void HandleClickIndex()
     {
-        NavigationManager.NavigateTo("", true);
+        NavigationManager.NavigateTo("");
     }
 
     private void HandleClickPersonIndex()
     {
-        NavigationManager.NavigateTo("/personIndex", true);
+        NavigationManager.NavigateTo("/personIndex");
     }
     private void HandleClickManageAccounts()
     {
-        NavigationManager.NavigateTo("/ManageAccounts", true);
+        NavigationManager.NavigateTo("/ManageAccounts");
     }
     private void HandleSubmit()
     {

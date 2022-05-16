@@ -16,7 +16,7 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
         protected string? MessageComponent { get; set; }
 
         [Parameter]
-        public string? Message { get; set; }
+        public string? Name { get; set; }
 
         [Inject]
         public HttpClient Http { get; set; }
@@ -32,7 +32,6 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
         protected List<Movie> page = new List<Movie>();
         protected List<ErrorItem> ErrorList = new List<ErrorItem>();
         protected List<string> SearchStringList = new List<string>();
-        protected AuthStateProvider _authStateProvider = new AuthStateProvider();
 
         protected string firstTenWords = "";
         protected string? searchString = null;
@@ -53,15 +52,14 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
 
             try
             {
-                var authstate = await _authStateProvider.GetAuthenticationStateAsync();
                 movies = await _movieService.GetMovies(true);
                 pageCounter = movies.Count() / pageSize;
                 HandleChangePage(1);
-                if (Message != null)
+                if (Name != null)
                 {
 
-                    search.SearchString = Message;
-                    Message = null;
+                    search.SearchString = Name;
+                    Name = null;
                     HandleSubmit();
 
                 }
@@ -93,7 +91,6 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
                     HandleChangePage(1);
                     return;
                 }
-                var authstate = await _authStateProvider.GetAuthenticationStateAsync();
                 page = await _movieService.SearchMovies(search.SearchString, true);
 
                 shouldRender = true;

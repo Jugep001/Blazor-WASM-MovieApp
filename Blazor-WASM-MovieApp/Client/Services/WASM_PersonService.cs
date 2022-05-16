@@ -1,5 +1,7 @@
-﻿using Blazor_WASM_MovieApp.Models;
+﻿using Blazor_WASM_MovieApp.Exceptions;
+using Blazor_WASM_MovieApp.Models;
 using Newtonsoft.Json;
+using System.Net.Http.Json;
 
 namespace Blazor_WASM_MovieApp.Client.Services
 {
@@ -10,6 +12,51 @@ namespace Blazor_WASM_MovieApp.Client.Services
         public WASM_PersonService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+        }
+
+        public async Task AddPerson(Person person)
+        {
+            string json = JsonConvert.SerializeObject(person, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            var response = await _httpClient.PostAsJsonAsync("/AddPerson", json);
+            var responseMessage = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                List<ErrorItem> errors = JsonConvert.DeserializeObject<List<ErrorItem>>(responseMessage);
+                throw new BusinessException(errors);
+            }
+        }
+
+        public async Task UpdatePerson(Person person)
+        {
+            string json = JsonConvert.SerializeObject(person, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                TypeNameHandling = TypeNameHandling.All,
+
+            });
+
+            var response = await _httpClient.PutAsJsonAsync($"/UpdatePerson", json);
+            var responseMessage = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                List<ErrorItem> errors = JsonConvert.DeserializeObject<List<ErrorItem>>(responseMessage);
+                throw new BusinessException(errors);
+            }
+        }
+
+        public async Task DeletePerson(int id)
+        {
+            var response = await _httpClient.DeleteAsync($"/DeletePerson/{id}");
+            var responseMessage = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                List<ErrorItem> errors = JsonConvert.DeserializeObject<List<ErrorItem>>(responseMessage);
+                throw new BusinessException(errors);
+            }
+
         }
 
         public async Task<List<Person>> GetPeople()

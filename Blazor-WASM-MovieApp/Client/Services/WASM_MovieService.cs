@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 using System.Net.Http;
+using Blazor_WASM_MovieApp.Exceptions;
 
 namespace Blazor_WASM_MovieApp.Client.Services
 {
@@ -84,6 +85,12 @@ namespace Blazor_WASM_MovieApp.Client.Services
             });
 
             var response = await _httpClient.PostAsJsonAsync($"/AddMovie", json);
+            var responseMessage = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                List<ErrorItem> errors = JsonConvert.DeserializeObject<List<ErrorItem>>(responseMessage);
+                throw new BusinessException(errors);
+            }
             return response.StatusCode.ToString();
         }
 
@@ -142,7 +149,23 @@ namespace Blazor_WASM_MovieApp.Client.Services
             });
 
             var response = await _httpClient.PutAsJsonAsync($"/UpdateMovie", json);
+            var responseMessage = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                List<ErrorItem> errors = JsonConvert.DeserializeObject<List<ErrorItem>>(responseMessage);
+                throw new BusinessException(errors);
+            }
             return response.StatusCode.ToString();
+        }
+
+        public async Task RestoreMovie(Movie movie, string currentUser)
+        {
+            string json = JsonConvert.SerializeObject(movie, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+
+            });
+            var response = await _httpClient.PutAsJsonAsync($"/RestoreMovie", json);
         }
     }
 }

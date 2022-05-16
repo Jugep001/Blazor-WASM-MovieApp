@@ -4,7 +4,7 @@
 @inherits GenreIndexBase
 
 <div class="table-responsive pt-lg-5  ">
-
+    <AuthorizeView Roles="admin, writer, reader" Context="authContext">
     <div class="pl-2 ">
         <div class="float-start mt-2">
             <a class="btn btn-primary" href="createGenre">Add Genre</a>
@@ -67,6 +67,7 @@
 
         </tbody>
     </table>
+    </AuthorizeView>
 </div>
 
 @code {

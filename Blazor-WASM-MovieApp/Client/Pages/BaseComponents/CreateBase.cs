@@ -50,6 +50,7 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
         protected InputFileChangeEventArgs inputFileChangeEventArgs = null;
         protected bool bClearInputFile = false;
         protected bool shouldRender = true;
+        protected bool isErrorActive = false;
         protected int CreditId;
         protected int _FunctionId;
         protected int currentIndex;
@@ -75,10 +76,6 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
         protected override void OnAfterRender(bool firstRender)
         {
 
-            if (!firstRender)
-            {
-                ErrorComponent.HideError();
-            }
             shouldRender = false;
 
         }
@@ -105,17 +102,16 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
                 }
                 //var authstate = await _getAuthenticationState.GetAuthenticationStateAsync();
                 var response = await _movieService.AddMovie(movie, loadedImage, loadedThumbnailImage, GenreIds);
-                ErrorComponent.HideError();
                 await Task.Delay(1);
-                _navigationManager.NavigateTo("", true);
+                _navigationManager.NavigateTo("");
 
             }
             catch (BusinessException ex)
             {
 
                 ErrorList = ex.ExceptionMessageList;
-                ErrorComponent.ShowError(ErrorList);
-
+                isErrorActive = true;
+                shouldRender = true;
             }
 
 

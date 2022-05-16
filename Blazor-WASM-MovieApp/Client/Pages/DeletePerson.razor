@@ -1,0 +1,61 @@
+﻿@page "/deletePerson/{Id:int}"
+@using Blazor_WASM_MovieApp.Models
+@using Blazor_WASM_MovieApp.Client.Pages.BaseComponents
+@inherits DeletePersonBase
+
+
+<h1 class="text-center">Delete Person</h1>
+
+@if (isErrorActive)
+{
+    <div class="alert alert-danger" role="alert">
+
+        <ul class="list-unstyled">
+            @foreach (var err in ErrorList)
+            {
+                <li>
+
+                    <p>@err.ErrorMessage</p>
+
+                </li>
+
+            }
+        </ul>
+
+    </div>
+}
+
+<div class="d-flex justify-content-center">
+    <div>
+        <hr />
+        <dl class="row text-end">
+            <dt class="col-sm-4">
+                First Name
+            </dt>
+            <dd class="col-sm-6">
+                @person.Vorname
+            </dd>
+            <dt class="col-sm-4">
+                Last Name
+            </dt>
+            <dd class="col-sm-6">
+                @person.Name
+            </dd>
+            
+
+
+        </dl>
+
+        <div class="d-flex justify-content-center pe-1 ">
+            <EditForm Model="person" OnSubmit="DeletePersonById">
+                <InputNumber class="hidden" @bind-Value="person.Id"></InputNumber>
+                <input type="submit" value="Delete" class="btn btn-danger" />
+                <a class="btn btn-primary" @onclick="@Cancel">Back to List</a>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+
+}

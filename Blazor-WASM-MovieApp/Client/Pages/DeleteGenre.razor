@@ -1,0 +1,53 @@
+﻿@page "/deleteGenre/{Id:int}"
+@using Blazor_WASM_MovieApp.Models
+@using Blazor_WASM_MovieApp.Client.Pages.BaseComponents
+@inherits DeleteGenreBase
+
+
+<h1 class="text-center">Delete Genre</h1>
+
+@if (isErrorActive)
+{
+    <div class="alert alert-danger" role="alert">
+
+        <ul class="list-unstyled">
+            @foreach (var err in ErrorList)
+            {
+                <li>
+
+                    <p>@err.ErrorMessage</p>
+
+                </li>
+
+            }
+        </ul>
+
+    </div>
+}
+
+<div class="d-flex justify-content-center">
+    <div>
+        <hr />
+        <dl class="row text-end">
+            <dt class="col-sm-4">
+                Name
+            </dt>
+            <dd class="col-sm-6">
+                @genre.Name
+            </dd>
+
+        </dl>
+
+        <div class="d-flex justify-content-center pe-1 ">
+            <EditForm Model="genre" OnSubmit="DeleteGenreById">
+                <InputNumber class="hidden" @bind-Value="genre.Id"></InputNumber>
+                <input type="submit" value="Delete" class="btn btn-danger" />
+                <a class="btn btn-primary" @onclick="@Cancel">Back to List</a>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+   
+}

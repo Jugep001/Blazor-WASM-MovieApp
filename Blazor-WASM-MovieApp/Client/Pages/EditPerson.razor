@@ -1,0 +1,62 @@
+﻿@page "/editPerson/{Id:int}"
+@using Blazor_WASM_MovieApp.Models
+@using Blazor_WASM_MovieApp.Client.Pages.BaseComponents
+@using Blazored.FluentValidation
+@inherits EditPersonBase
+
+<h1 class="text-center">Edit Person</h1>
+<hr />
+
+@if (isErrorActive)
+{
+    <div class="alert alert-danger" role="alert">
+
+        <ul class="list-unstyled">
+            @foreach (var err in ErrorList)
+            {
+                <li>
+
+                    <p>@err.ErrorMessage</p>
+
+                </li>
+
+            }
+        </ul>
+
+    </div>
+}
+
+<div class="d-flex justify-content-center">
+
+
+    <div class="col-md-4 ">
+        <EditForm Model="person" OnValidSubmit="UpdatePerson">
+            <FluentValidationValidator />
+
+            <div class="form-group mt-3">
+                <label class="control-label">First Name</label>
+                <InputText @bind-Value="person.Vorname" class="form-control" />
+                <ValidationMessage For="() => person.Vorname" />
+
+            </div>
+
+            <div class="form-group mt-3">
+                <label class="control-label">Last Name</label>
+                <InputText @bind-Value="person.Name" class="form-control" />
+                <ValidationMessage For="() => person.Name" />
+
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+                <button type="button" class="btn btn-primary" @onclick="Cancel">Back to List</button>
+            </div>
+
+        </EditForm>
+
+    </div>
+</div>
+
+@code {
+
+}

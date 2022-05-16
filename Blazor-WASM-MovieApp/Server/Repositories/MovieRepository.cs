@@ -123,7 +123,7 @@ namespace Blazor_WASM_MovieApp.Repositories
 
         public async void UpdateMovie(Movie movie, Image image, List<int> genreIds, List<Credit> deleteCreditList, bool shouldDelete, string currentUser)
         {
-            var tempMovie = _dbContext.Movies.Include(x => x.Genres).Include(x => x.Image).Include(x => x.Changelogs).Where(x => x.Id == movie.Id).First();
+            var tempMovie = _dbContext.Movies.Include(x => x.Genres).Include(x => x.Image).Include(x => x.Changelogs).Where(x => x.Id == movie.Id).IgnoreQueryFilters().First();
             tempMovie.Title = movie.Title;
             tempMovie.Description = movie.Description;
             tempMovie.Price = movie.Price;
@@ -290,7 +290,7 @@ namespace Blazor_WASM_MovieApp.Repositories
             return;
         }
 
-        public void RestoreMovie(Movie movie, string currentUser)
+        public async Task RestoreMovie(Movie movie, string currentUser)
         {
             movie.IsDeleted = false;
             _dbContext.Movies.Update(movie);

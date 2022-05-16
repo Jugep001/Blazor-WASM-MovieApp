@@ -2,8 +2,6 @@ using Blazor_WASM_MovieApp.Exceptions;
 using Blazor_WASM_MovieApp.Models;
 using Blazor_WASM_MovieApp.Services;
 using Blazor_WASM_MovieApp.Shared.Models;
-using Blazor_WASM_MovieApp.Validators;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -20,6 +18,7 @@ namespace Blazor_WASM_MovieApp.Server.Controllers
         private readonly PersonService _personService;
 
 
+
         public MovieController(MovieService movieService, GenreService genreService, PersonService personService, CreditService creditService)
         {
             _movieService = movieService;
@@ -28,12 +27,27 @@ namespace Blazor_WASM_MovieApp.Server.Controllers
             _personService = personService;
         }
 
+        
+
+
         [HttpGet]
         [Route("/GetGenres")]
         public async Task<IActionResult> GetGenres()
         {
             var genres = _genreService.GetGenres(null);
             string json = JsonConvert.SerializeObject(genres, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            return Ok(json);
+        }
+
+        [HttpGet]
+        [Route("/GetGenre/{id}")]
+        public async Task<IActionResult> GetGenre(int id)
+        {
+            var genre = _genreService.GetGenre(id);
+            string json = JsonConvert.SerializeObject(genre, Formatting.Indented, new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
@@ -226,25 +240,49 @@ namespace Blazor_WASM_MovieApp.Server.Controllers
         [Route("/AddMovie")]
         public async Task<IActionResult> AddMovie([FromBody] string json)
         {
-            MovieInput movieInput = JsonConvert.DeserializeObject<MovieInput>(json);
-            _movieService.AddMovie(movieInput.Movie, movieInput.Image, movieInput.GenreIds, "admin");
-            return Ok();
+            try
+            {
+                MovieInput movieInput = JsonConvert.DeserializeObject<MovieInput>(json);
+                _movieService.AddMovie(movieInput.Movie, movieInput.Image, movieInput.GenreIds, "admin");
+                return Ok();
+            }
+            catch (BusinessException ex)
+            {
+                string errorString = JsonConvert.SerializeObject(ex.ExceptionMessageList, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                return BadRequest(errorString);
+            }
+
         }
 
         [HttpPut]
         [Route("/UpdateMovie")]
         public async Task<IActionResult> UpdateMovie([FromBody] string json)
         {
-            MovieInput movieInput = JsonConvert.DeserializeObject<MovieInput>(json);
-            _movieService.UpdateMovie(movieInput.Movie, movieInput.Image, movieInput.GenreIds, movieInput.DeleteCreditList, movieInput.ShouldDelete, "admin");
-            return Ok();
+            try
+            {
+                MovieInput movieInput = JsonConvert.DeserializeObject<MovieInput>(json);
+                _movieService.UpdateMovie(movieInput.Movie, movieInput.Image, movieInput.GenreIds, movieInput.DeleteCreditList, movieInput.ShouldDelete, "admin");
+                return Ok();
+            }
+            catch (BusinessException ex)
+            {
+                string errorString = JsonConvert.SerializeObject(ex.ExceptionMessageList, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                return BadRequest(errorString);
+            }
+
         }
 
         [HttpPost]
         [Route("/AddImage")]
         public async Task<IActionResult> AddImage([FromForm] IEnumerable<IFormFile> files)
         {
-            
+
             Image image = await _movieService.AddImage(files);
 
             return Ok(image);
@@ -277,6 +315,133 @@ namespace Blazor_WASM_MovieApp.Server.Controllers
             return Ok();
         }
 
+        [HttpPost("/AddGenre")]
+        public async Task<IActionResult> AddGenre([FromBody] string json)
+        {
+            try
+            {
+
+                Genre genre = JsonConvert.DeserializeObject<Genre>(json);
+                _genreService.AddGenre(genre);
+                return Ok();
+
+            }
+            catch (BusinessException ex)
+            {
+                string errorString = JsonConvert.SerializeObject(ex.ExceptionMessageList, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                return BadRequest(errorString);
+            }
+        }
+
+        [HttpPut("/UpdateGenre")]
+        public async Task<IActionResult> UpdateGenre([FromBody] string json)
+        {
+            try
+            {
+
+                Genre genre = JsonConvert.DeserializeObject<Genre>(json);
+                _genreService.UpdateGenre(genre);
+                return Ok();
+
+            }
+            catch (BusinessException ex)
+            {
+                string errorString = JsonConvert.SerializeObject(ex.ExceptionMessageList, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                return BadRequest(errorString);
+            }
+
+        }
+
+        [HttpDelete("/DeleteGenre/{id}")]
+        public async Task<IActionResult> DeleteGenre(int id)
+        {
+            try
+            {
+                _genreService.DeleteGenre(id);
+                return Ok();
+            }
+            catch (BusinessException ex)
+            {
+                string errorString = JsonConvert.SerializeObject(ex.ExceptionMessageList, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                return BadRequest(errorString);
+            }
+
+        }
+
+        [HttpPost("/AddPerson")]
+        public async Task<IActionResult> AddPerson([FromBody] string json)
+        {
+            try
+            {
+                Person person = JsonConvert.DeserializeObject<Person>(json);
+                _personService.AddPerson(person);
+                return Ok();
+            }
+            catch (BusinessException ex)
+            {
+                string errorString = JsonConvert.SerializeObject(ex.ExceptionMessageList, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                return BadRequest(errorString);
+            }
+
+        }
+
+        [HttpPut("/UpdatePerson")]
+        public async Task<IActionResult> UpdatePerson([FromBody] string json)
+        {
+            try
+            {
+                Person person = JsonConvert.DeserializeObject<Person>(json);
+                _personService.UpdatePerson(person);
+                return Ok();
+            }
+            catch (BusinessException ex)
+            {
+                string errorString = JsonConvert.SerializeObject(ex.ExceptionMessageList, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                return BadRequest(errorString);
+            }
+
+        }
+
+        [HttpDelete("/DeletePerson/{id}")]
+        public async Task<IActionResult> DeletePerson(int id)
+        {
+            try
+            {
+                _personService.DeletePerson(id);
+                return Ok();
+            }
+            catch (BusinessException ex)
+            {
+                string errorString = JsonConvert.SerializeObject(ex.ExceptionMessageList, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                return BadRequest(errorString);
+            }
+        }
+
+        [HttpPut("/RestoreMovie")]
+        public async Task<IActionResult> RestoreMovie([FromBody] string json)
+        {
+            Movie movie = JsonConvert.DeserializeObject<Movie>(json);
+            await _movieService.RestoreMovie(movie, "admin");
+            return Ok();
+        }
 
     }
 }

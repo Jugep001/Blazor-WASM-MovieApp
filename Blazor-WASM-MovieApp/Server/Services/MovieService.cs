@@ -24,7 +24,15 @@ namespace Blazor_WASM_MovieApp.Services
 
         public void AddMovie(Movie movie, Image image, List<int> genreIds, string currentUser)
         {
+            errors = new List<ErrorItem>();
 
+            _movieValidator.ValidateAndThrowBusinessException(movie);
+
+            if (_movieRepository.MovieExist(movie.Title, movie.ReleaseDate.Value, movie.Id))
+            {
+                errors.Add(new ErrorItem("Title", "Dieser Film existiert bereits!"));
+                throw new BusinessException(errors);
+            }
 
             _movieRepository.AddMovie(movie, image, genreIds, currentUser);
 
@@ -43,6 +51,12 @@ namespace Blazor_WASM_MovieApp.Services
             errors = new List<ErrorItem>();
 
             _movieValidator.ValidateAndThrowBusinessException(movie);
+
+            if (_movieRepository.MovieExist(movie.Title, movie.ReleaseDate.Value, movie.Id))
+            {
+                errors.Add(new ErrorItem("Title", "Dieser Film existiert bereits!"));
+                throw new BusinessException(errors);
+            }
 
             foreach (int genreId in genreIds)
             {
@@ -184,7 +198,7 @@ namespace Blazor_WASM_MovieApp.Services
             return _movieRepository.GetFirstTenWords(description);
         }
 
-        public void RestoreMovie(Movie movie, string currentUser)
+        public async Task RestoreMovie(Movie movie, string currentUser)
         {
             errors = new List<ErrorItem>();
 

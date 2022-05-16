@@ -21,8 +21,14 @@ namespace Blazor_WASM_MovieApp.Services
 
         public void AddGenre(Genre genre)
         {
-
+            errors = new List<ErrorItem>();
             _genreValidator.ValidateAndThrowBusinessException(genre);
+
+            if(_genreRepository.GenreExist(genre.Name, genre.Id))
+            {
+                errors.Add(new ErrorItem("Name", "Dieses Genre existiert bereits!"));
+                throw new BusinessException(errors);
+            }
 
             _genreRepository.AddGenre(genre);
 
@@ -39,7 +45,12 @@ namespace Blazor_WASM_MovieApp.Services
                 errors.Add(new ErrorItem("Id", "Dieses Genre existiert nicht!"));
                 throw new BusinessException(errors);
             }
-         
+            if (_genreRepository.GenreExist(genre.Name, genre.Id))
+            {
+                errors.Add(new ErrorItem("Name", "Dieses Genre existiert bereits!"));
+                throw new BusinessException(errors);
+            }
+
 
             _genreRepository.UpdateGenre(genre);
 
