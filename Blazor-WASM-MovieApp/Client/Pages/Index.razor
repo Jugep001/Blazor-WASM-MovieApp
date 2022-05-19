@@ -20,7 +20,7 @@
                             <InputText type="text" class="form-control rcorners2" name="searchString" placeholder="Search" @bind-Value="search.SearchString" />
                         </div>
                         <div>
-                            <input type="submit" value="Search" class="btn btn-secondary search-movie ms-1 rcorners3" />
+                            <MudButton ButtonType="MudBlazor.ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Style="border-radius: 25px; text-align: start; margin-bottom: 24px; width: 100%;height: 70%">Search</MudButton>
                         </div>
 
                     </div>
@@ -30,7 +30,9 @@
                 <AuthorizeView Roles="admin, writer" Context="AddContext">
 
                 <div class="right-search">
-                    <a class="btn btn-primary add-movie" href="create">Add Movie</a>
+
+                    <MudButton Href="create" Variant="Variant.Filled" Color="Color.Primary"> Add Movie  </MudButton>
+                                                                              
                 </div>
                 </AuthorizeView>
             </div>
@@ -47,10 +49,10 @@
             @foreach (Movie movie in page)
             {
 
-                <div class=" main-layout mb-4">
+                <div class="main-layout mb-4">
                     <div class="d-flex">
                         <div class="text-start customFill">
-                            <a class="text-decoration-none link-hover" href="details/@movie.Id">
+                            <a class="btn-link" href="details/@movie.Id">
 
                                 <ul class="genreList">
                                     @if (movie.Genres != null)
@@ -86,7 +88,9 @@
                                     }
                                     @if (movie.IsDeleted)
                                     {
+                                        
                                         <span class="badge bg-danger ms-3 h-25">Deleted</span>
+                                       
                                     }
                                 </ul>
 
@@ -137,7 +141,7 @@
                                 <span class="d-flex flex-column mb-3 descriptionSize">
 
 
-                                    @((MarkupString)movie.ShortDescription)
+                                    @(movie.ShortDescription)
 
 
 

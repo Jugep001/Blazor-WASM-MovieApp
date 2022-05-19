@@ -46,7 +46,8 @@ namespace Blazor_WASM_MovieApp.Repositories
             if (movie.Description != null || movie.Description != "")
             {
                 movie.ShortDescription = String.Empty;
-                var shortDescriptionList = movie.Description.Split().Take(10);
+                var descriptionWithoutMarkup = Regex.Replace(movie.Description, "<.*?>", String.Empty);
+                var shortDescriptionList = descriptionWithoutMarkup.Split().Take(10);
                 var lastItem = shortDescriptionList.Last();
                 foreach (var shortDescription in shortDescriptionList)
                 {
@@ -133,7 +134,8 @@ namespace Blazor_WASM_MovieApp.Repositories
             if (tempMovie.Description != null || tempMovie.Description != "")
             {
                 tempMovie.ShortDescription = String.Empty;
-                var shortDescriptionList = tempMovie.Description.Split().Take(10);
+                var descriptionWithoutMarkup = Regex.Replace(tempMovie.Description, "<.*?>", String.Empty);
+                var shortDescriptionList = descriptionWithoutMarkup.Split().Take(10);
                 var lastItem = shortDescriptionList.Last();
                 foreach (var shortDescription in shortDescriptionList)
                 {
@@ -145,7 +147,7 @@ namespace Blazor_WASM_MovieApp.Repositories
                     else
                     {
                         tempMovie.ShortDescription += shortDescription + " ";
-                    }                  
+                    }
 
                 }
                 tempMovie.ShortDescription += "...";
@@ -290,10 +292,14 @@ namespace Blazor_WASM_MovieApp.Repositories
             return;
         }
 
-        public async Task RestoreMovie(Movie movie, string currentUser)
+        public void RestoreMovie(int movieId, string currentUser)
         {
+            Movie movie = GetMovie(movieId);
             movie.IsDeleted = false;
+
             _dbContext.Movies.Update(movie);
+
+
             UpdateChangelog(movie, currentUser);
             _dbContext.SaveChanges();
         }

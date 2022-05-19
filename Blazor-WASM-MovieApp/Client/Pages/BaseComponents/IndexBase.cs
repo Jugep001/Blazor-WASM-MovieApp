@@ -27,6 +27,9 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
         [Inject]
         protected WASM_IMovieService _movieService { get; set; }
 
+        [Inject]
+        protected AuthenticationStateProvider _getAuthenticationState { get; set; }
+
         protected Search search = new Search();
         protected List<Movie> movies = new List<Movie>();
         protected List<Movie> page = new List<Movie>();
@@ -52,7 +55,8 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
 
             try
             {
-                movies = await _movieService.GetMovies(true);
+                var authstate = await _getAuthenticationState.GetAuthenticationStateAsync();
+                movies = await _movieService.GetMovies(authstate.User.IsInRole("admin"));
                 pageCounter = movies.Count() / pageSize;
                 HandleChangePage(1);
                 if (Name != null)

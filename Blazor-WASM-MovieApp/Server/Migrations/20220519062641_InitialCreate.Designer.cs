@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorWASMMovieApp.Server.Migrations
 {
     [DbContext(typeof(BlazorMovieContext))]
-    [Migration("20220516070845_InitialCreate")]
+    [Migration("20220519062641_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,20 +71,26 @@ namespace BlazorWASMMovieApp.Server.Migrations
                     b.Property<int>("FunctionId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Identifier")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDragOver")
                         .HasColumnType("bit");
 
                     b.Property<int?>("MovieId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PersonId")
+                    b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Position")
+                    b.Property<int>("PersonId")
                         .HasColumnType("int");
 
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ShouldDelete")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

@@ -29,230 +29,165 @@
 
     </div>
 }
+<div class="container-fluid d-flex justify-content-center">
+    <MudPaper Style="@("background: #FFFFFF")" Class="py-16 d-inline-flex justify-content-center" Width="75%">
 
-<div class="d-flex justify-content-center">
+        <div class="col-md-4 ">
+            <EditForm Model="movie" OnValidSubmit="UpdateMovie">
+                <FluentValidationValidator />
 
-    <div class="col-md-4 ">
-        <EditForm Model="movie" OnValidSubmit="UpdateMovie">
-            <FluentValidationValidator />
+                <InputNumber class="hidden" @bind-Value="movie.Id"></InputNumber>
 
-            <InputNumber class="hidden" @bind-Value="movie.Id"></InputNumber>
+                <div class="form-group mt-3">
 
-            <div class="form-group mt-3">
-
-                <label class="control-label">Title</label>
-                <InputText @bind-Value="movie.Title" class="form-control" />
-                <ValidationMessage For="() => movie.Title" />
-
-            </div>
-
-            <div class="row">
-                <div class="form-group mt-3 col">
-
-                    <div class="form-group pb-3 col">
-
-                        <label class="control-label">Release Date</label>
-                        <InputDate @bind-Value="movie.ReleaseDate" class="form-control" />
-                        <ValidationMessage For="() => movie.ReleaseDate" />
-
-                    </div>
-                    <div class="form-group mt-3 pb-3 col">
-
-                        <label class="control-label">Price</label>
-                        <InputNumber @bind-Value="movie.Price" class="form-control" />
-
-                    </div>
-                    <div class="form-group mt-3 pt-3 col">
-                        <label class="control-label">Rating</label>
-                        <InputSelect class="form-select" @bind-Value="movie.Rating">
-
-                            <option value="G">G</option>
-                            <option value="PG">PG</option>
-                            <option value="PG-13">PG-13</option>
-                            <option value="R">R</option>
-                            <option value="NC-17">NC-17</option>
-
-                        </InputSelect>
-
-                    </div>
+                    <MudTextField @bind-Value="movie.Title" Label="Title" Variant="Variant.Filled" />
+                    <ValidationMessage For="() => movie.Title" />
 
                 </div>
 
+                <div class="row">
+                    <div class="form-group mt-3 col">
 
-                <div class="form-group mt-3 col">
-                    <label class="control-label">Genre</label>
+                        <div class="form-group pb-3 col">
 
-                    <br />
-                    <div class="scrollable-div-edit">
+                            <MudDatePicker Editable="true" @bind-Date="movie.ReleaseDate" Label="Release Date" Variant="Variant.Filled" Placeholder="Select Date" />
+                            <ValidationMessage For="() => movie.ReleaseDate" />
 
-                        @foreach (Genre genre in genres)
-                        {
-                            if (GenreIds.Contains(genre.Id))
-                            {
-                                <label class="ps-2 pt-1">
+                        </div>
+                        <div class="form-group mt-3 pb-3 col">
 
-                                    @genre.Name
-                                    <input type="checkbox" class="form-check-input" aria-label="Default select example" @key="genre.Id" @onchange="eventArgs => { CheckboxClicked(genre.Id, eventArgs.Value); }" checked />
+                            <MudNumericField @bind-Value="movie.Price" Label="Price" Variant="Variant.Filled" />
 
-                                </label>
-                                <br />
-                            }
-                            else
-                            {
-                                <label class="ps-2 pt-1">
+                        </div>
+                        <div class="form-group mt-3 pb-3 col">
 
-                                    @genre.Name
-                                    <input type="checkbox" class="form-check-input" aria-label="Default select example" @key="genre.Id" @onchange="eventArgs => { CheckboxClicked(genre.Id, eventArgs.Value); }" />
-
-                                </label>
-                                <br />
-                            }
-
-                        }
-
-                    </div>
-
-
-                </div>
-            </div>
-
-            <div class="row pb-4">
-                <div class="form-group mt-3 col ">
-
-                    <label class="control-label">Description</label>
-
-                    <RadzenHtmlEditor @bind-Value=@movie.Description style="height: 400px;" />
-
-                </div>
-            </div>
-
-            <div class="row">
-                @if (!bClearInputFile)
-                {
-                    <div class="form-group col">
-                        <div class="d-flex">
-
-                            <InputFile class="form-control" OnChange="LoadImage" accept="image/*" />
-                            <button type="button" class="btn btn-primary" @onclick="DeleteImage"><span class="iconify" data-icon="gridicons:trash"></span></button>
+                            <MudSelect T="string" @bind-Value="movie.Rating" Label="Rating" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                                <MudSelectItem Value="@("G")">G</MudSelectItem>
+                                <MudSelectItem Value="@("PG")">PG</MudSelectItem>
+                                <MudSelectItem Value="@("PG-13")">PG-13</MudSelectItem>
+                                <MudSelectItem Value="@("R")">R</MudSelectItem>
+                                <MudSelectItem Value="@("NC-17")">NC-17</MudSelectItem>
+                            </MudSelect>
 
                         </div>
 
-                        @if (ImageName != string.Empty)
-                        {
-                            <div class="form-label">
+                    </div>
 
-                                <label class="form-">@ImageName loaded</label>
+
+                        <div class="form-group mt-3 col">
+
+                            <br />
+                            <label class="control-label">Genres</label>
+
+                            <div class="scrollable-div-edit">
+
+                                @foreach (Genre genre in genres)
+                                {
+                                    if (GenreIds.Contains(genre.Id))
+                                    {
+                                        <label class="pt-1">
+
+
+                                            <MudCheckBox T="bool" Label="@genre.Name" Color="MudBlazor.Color.Primary" @key="genre.Id" CheckedChanged="eventArgs => { CheckboxClicked(genre.Id, eventArgs); }" Checked="true"></MudCheckBox>
+
+                                        </label>
+
+                                    }
+                                    else
+                                    {
+                                        <label class="pt-1">
+
+                                            <MudCheckBox T="bool" Label="@genre.Name" Color="MudBlazor.Color.Primary" @key="genre.Id" CheckedChanged="eventArgs => { CheckboxClicked(genre.Id, eventArgs); }"></MudCheckBox>
+
+                                        </label>
+
+                                    }
+
+                                }
 
                             </div>
-                        }
 
 
-                    </div>
-                }
-            </div>
-            <div class="form-group mt-3 pb-4">
+                        </div>
 
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <AuthorizeView Roles="admin" Context="authContext">
-                    @if (movie.IsDeleted)
+                </div>              
+
+                <div class="row">
+                    @if (!bClearInputFile)
                     {
-                        <a class="btn btn-primary" @onclick="@RestoreMovie">Restore</a>
+                        <div class="form-group col">
+                            <div class="d-flex">
+
+                                <InputFile class="form-control" OnChange="LoadImage" accept="image/*" />
+                                <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" @onclick="DeleteImage"><span class="iconify" data-icon="bi:trash-fill"></span></MudButton>
+
+                            </div>
+
+                            @if (ImageName != string.Empty)
+                            {
+                                <div class="form-label">
+
+                                    <label class="control-label">@ImageName loaded</label>
+
+                                </div>
+                            }
+
+
+                        </div>
                     }
-                </AuthorizeView>
-                <button type="button" class="btn btn-danger" @onclick="@Cancel">Cancel</button>
+                </div>
+                <div class="form-group mt-3 pb-4">
 
-            </div>
-
-        </EditForm>
-
-    </div>
-    <div class="col-md-4 ms-4">
-
-        <div class="form-group mt-3 col overflow-auto">
-
-            <label class="control-label">Credits</label>
-            <div class="scrollable-div-edit">
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th class="pe-2"> First Name </th>
-
-                            <th class="pe-2"> Last Name </th>
-
-                            <th class="pe-2"> Function </th>
-
-                            <th class="pe-2"> Role </th>
-
-                            <th>Actions</th>
-
-                        </tr>
-
-                    </thead>
-
-                      <tbody ondragover="event.preventDefault();" ondragstart="event.dataTransfer.setData('', event.target.id);">
-
-                        @foreach (Credit credit in creditList.OrderBy(x => x.Position))
+                    <MudButton ButtonType="MudBlazor.ButtonType.Submit" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">Save</MudButton>
+                    <AuthorizeView Roles="admin" Context="authContext">
+                        @if (movie.IsDeleted)
                         {
 
-                           <tr @ondrop="(() => Drop(credit))" @ondragleave="@(()=> {credit.IsDragOver = false; shouldRender = true;})"
-                            @ondragenter="@(()=>{shouldRender = true;})"
-                            @ondragstart="() => {SetIndex(credit); shouldRender = true;}"
-                            @ondragend="()=> {shouldRender = true;}" draggable="true">
-
-                                <td> @credit.Person.Vorname </td>
-
-                                <td> @credit.Person.Name</td>
-
-                                <td>
-
-                                    @if (credit.Function != null)
-                                    {
-                                        @credit.Function.FunctionName
-                                    }
-
-                                </td>
-
-                                <td>
-
-                                    @if (credit.Function != null && credit.Function.IsRoleRequired)
-                                    {
-                                        @credit.Role
-                                    }
-
-                                </td>
-
-                                <td>
-                                    <button @onclick="@(() => ShowEditCredit(credit))" class="btn btn-primary">Edit</button>
-                                    <button @onclick="@(() => DeleteCredit(credit))" class="btn btn-danger">Delete</button>
-
-                                </td>
-
-
-                            </tr>
-
+                            <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" @onclick="@RestoreMovie">Restore</MudButton>
 
                         }
+                    </AuthorizeView>
+                    <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Secondary" @onclick="@AddDescription">Manage Description</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Error" @onclick="@Cancel">Cancel</MudButton>
 
-
-                    </tbody>
-                </table>
-            </div>
-            <div class="pl-2 ">
-
-                <div class="float-start mt-2">
-                    <a type="button" class="btn btn-secondary me-2 mb-2" @onclick="@(() => ShowAddCredit())">Add Credit</a>
                 </div>
 
+            </EditForm>
+
+        </div>
+        <div class="col-md-4 ms-4">
+
+            <div class="form-group col overflow-auto">
+
+                <div class="scrollable-div-edit">
+
+                    <MudDropContainer T="DropItem" Items="@_items" @ref="_container" ItemsSelector="@((item,dropzone) => item.Identifier == dropzone)" ItemDropped="(credit) => Drop(credit)" Class="d-flex flex-wrap flex-grow-1">
+                        <ChildContent>
+
+                            <MudPaper Class="ma-4 flex-grow-1">
+                                <MudList Clickable="true" Class="d-flex flex-column mud-height-full">
+
+                                    <MudListSubheader>Credits</MudListSubheader>
+                                    <MudDropZone T="DropItem" Identifier="1" Class="flex-grow-1" AllowReorder="true" />
+
+                                </MudList>
+                            </MudPaper>
+
+                        </ChildContent>
+                        <ItemRenderer>
+                            <MudListItem Text="@($"{context.Person.Vorname} {context.Person.Name}")" OnClick="() => ShowEditCredit(context)" />
+                        </ItemRenderer>
+                    </MudDropContainer>
+                    <MudFab Color="MudBlazor.Color.Secondary" StartIcon="@Icons.Material.Filled.Add" OnClick="(() => ShowAddCredit())" Class="float-end" />
+
+                </div>
             </div>
+
+
         </div>
 
-
-    </div>
+    </MudPaper>
 </div>
-
 @code {
 
 

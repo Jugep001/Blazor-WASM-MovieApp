@@ -25,12 +25,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.JSInterop.WebAssembly" Version="6.0.5" />
+    <PackageReference Include="MudBlazor" Version="6.0.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Radzen.Blazor" Version="3.18.8" />
+    <PackageReference Include="Radzen.Blazor" Version="3.18.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Blazor-WASM-MovieApp.Shared.csproj" />
+    <ProjectReference Include="..\Shared\Blazor_WASM_MovieApp.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -41,13 +41,13 @@
         <div class="d-flex justify-content-center pe-1 ">
             <EditForm Model="genre" OnSubmit="DeleteGenreById">
                 <InputNumber class="hidden" @bind-Value="genre.Id"></InputNumber>
-                <input type="submit" value="Delete" class="btn btn-danger" />
-                <a class="btn btn-primary" @onclick="@Cancel">Back to List</a>
+                <MudButton ButtonType="MudBlazor.ButtonType.Submit" Variant="Variant.Filled" Color="MudBlazor.Color.Error">Delete</MudButton>
+                <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" @onclick="@Cancel">Back To List</MudButton>
             </EditForm>
         </div>
     </div>
 </div>
 
 @code {
-   
+
 }

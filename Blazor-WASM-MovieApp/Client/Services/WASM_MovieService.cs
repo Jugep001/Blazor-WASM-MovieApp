@@ -23,7 +23,7 @@ namespace Blazor_WASM_MovieApp.Client.Services
 
         public async Task<List<Movie>> GetMovies(bool isAdmin)
         {
-            var json = await _httpClient.GetStringAsync($"/GetMovies/{true}");
+            var json = await _httpClient.GetStringAsync($"/GetMovies/{isAdmin}");
             List<Movie> movies = JsonConvert.DeserializeObject<List<Movie>>(json);
             return movies;
         }
@@ -54,7 +54,7 @@ namespace Blazor_WASM_MovieApp.Client.Services
             return _movieRepository.HighlightDescription(description, searchString);
         }
 
-        public async Task<string> AddMovie(Movie movie, IBrowserFile? loadedImage, IBrowserFile? loadedThumbnailImage, List<int> genreIds)
+        public async Task<string> AddMovie(Movie movie, IBrowserFile? loadedImage, IBrowserFile? loadedThumbnailImage, List<int> genreIds, string currentUser)
         {
             Image image = null;
             if (loadedImage != null)
@@ -74,7 +74,8 @@ namespace Blazor_WASM_MovieApp.Client.Services
             {
                 Movie = movie,
                 Image = image,
-                GenreIds = genreIds
+                GenreIds = genreIds,
+                CurrentUser = currentUser
             };
 
             string json = JsonConvert.SerializeObject(movieInput, Formatting.Indented, new JsonSerializerSettings
@@ -139,6 +140,7 @@ namespace Blazor_WASM_MovieApp.Client.Services
                 GenreIds = genreIds,
                 DeleteCreditList = deleteCreditList,
                 ShouldDelete = shouldDelete,
+                CurrentUser = currentUser
             };
 
             string json = JsonConvert.SerializeObject(movieInput, Formatting.Indented, new JsonSerializerSettings
@@ -160,12 +162,8 @@ namespace Blazor_WASM_MovieApp.Client.Services
 
         public async Task RestoreMovie(Movie movie, string currentUser)
         {
-            string json = JsonConvert.SerializeObject(movie, Formatting.Indented, new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
 
-            });
-            var response = await _httpClient.PutAsJsonAsync($"/RestoreMovie", json);
+            var response = await _httpClient.PutAsJsonAsync($"/RestoreMovie", movie.Id);
         }
     }
 }

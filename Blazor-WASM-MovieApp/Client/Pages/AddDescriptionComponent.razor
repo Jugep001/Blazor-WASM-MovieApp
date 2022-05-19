@@ -1,0 +1,22 @@
+﻿@using Blazor_WASM_MovieApp.Client.Pages.BaseComponents
+@inherits AddDescriptionComponentBase
+
+
+<div class="row pb-4">
+    <div class="form-group mt-3 col ">
+
+
+        <RadzenHtmlEditor @bind-Value=@description style="height: 400px;" class="text-black" />
+
+    </div>
+</div>
+<div class="form-group mt-3">
+
+    <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" @onclick="SaveDescription">Save</MudButton>
+    <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Error" @onclick="ModalInstance.CancelAsync">Cancel</MudButton>
+
+</div>
+
+@code {
+
+}

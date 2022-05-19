@@ -1,7 +1,9 @@
 ﻿@page "/ManageAccounts"
 @using Blazor_WASM_MovieApp.Client.Pages.BaseComponents
 @inherits ManageAccountsBase
-
+<div class="d-flex">
+    <MudButton Href="/Register" Variant="Variant.Filled" Color="Color.Primary"> Add User  </MudButton>
+</div>
 <table class="table table-hover table-striped bg-white">
     <thead class="table-dark">
         <tr>
@@ -44,10 +46,7 @@
 
     </tbody>
 </table>
-<div class="d-flex">
-    <a class="btn btn-primary ms-2 me-2" href="/Register">Add User</a>
-    <a class="btn btn-danger" href="/">Cancel</a>
-</div>
+
 
 @code {
 

@@ -3,10 +3,7 @@
 @using Blazor_WASM_MovieApp.Client.Pages.BaseComponents
 @inherits DetailsBase
 
-@if (movie.ReleaseDate != null)
-{
-    <h1 class="text-center">@movie.Title <span>(@movie.ReleaseDate.Value.Year)</span></h1>
-}
+
 
 <div class="d-flex">
     @if (movie.Image != null)
@@ -19,6 +16,10 @@
 
 
     <div class="container-fluid">
+        @if (movie.ReleaseDate != null)
+        {
+            <h1 class="text-center">@movie.Title <span>(@movie.ReleaseDate.Value.Year)</span></h1>
+        }
         <div class="d-flex justify-content-center">
             <ul class="nav nav-tabs mt-2" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -153,17 +154,21 @@
 
                 </div>
                 <div class="d-flex justify-content-center pe-1 ">
+                    <AuthorizeView Roles="admin, writer">
                     <div class="p-1">
-                        <a href="edit/@movie.Id" class="btn btn-primary">Edit</a>
+                        
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => ChangeToEdit(movie)">Edit</MudButton>
+                       
                     </div>
                     @if (!movie.IsDeleted)
                     {
                         <div class="p-1">
-                            <a class="btn btn-danger" @onclick="@DeleteMovie">Delete</a>
+                            <MudButton Variant="Variant.Filled" Color="Color.Error" OnClick="DeleteMovie">Delete</MudButton>
                         </div>
                     }
+                     </AuthorizeView>
                     <div class="p-1">
-                        <a class="btn btn-primary" @onclick="@Cancel">Back to List</a>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@Cancel">Back to List</MudButton>
                     </div>
                 </div>
             </div>
@@ -235,7 +240,7 @@
                 <div class="d-flex justify-content-center pe-1 ">
 
                     <div class="p-1">
-                        <a class="btn btn-primary" @onclick="@Cancel">Back to List</a>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="@Cancel">Back to List</MudButton>
                     </div>
 
                 </div>

@@ -18,7 +18,9 @@ namespace Blazor_WASM_MovieApp.Models
 
         public string? Role { get; set; }
 
-        public int? Position { get; set; }
+        public int Order { get; set; }
+        public string? Identifier { get; set; } = "1";
+        public bool ShouldDelete { get; set; }
 
         public bool IsDragOver { get; set; }
 

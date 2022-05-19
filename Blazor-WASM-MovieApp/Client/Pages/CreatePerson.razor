@@ -28,34 +28,39 @@
     </div>
 }
 
-<div class="d-flex justify-content-center">
+<div class="container-fluid d-flex justify-content-center">
+    <MudPaper Style="@("background: #FFFFFF")" Class="py-16 d-inline-flex justify-content-center" Width="75%">
 
-    <div class="col-md-4 ">
-        <EditForm Model="person" OnValidSubmit="AddPerson">
-            <FluentValidationValidator />
+        <div class="col-md-4 ">
+            <EditForm Model="person" OnValidSubmit="AddPerson">
+                <FluentValidationValidator />
 
-            <div class="form-group mt-3">
-                <label class="control-label">First Name</label>
-                <InputText @bind-Value="person.Vorname" class="form-control" />
-                <ValidationMessage For="() => person.Vorname" />
+                <div class="form-group mt-3">
 
-            </div>
+                    <MudTextField @bind-Value="person.Vorname" Label="First Name" Variant="Variant.Filled" />
+                    <ValidationMessage For="() => person.Vorname" />
 
-            <div class="form-group mt-3">
-                <label class="control-label">Last Name</label>
-                <InputText @bind-Value="person.Name" class="form-control" />
-                <ValidationMessage For="() => person.Name" />
+                </div>
 
-            </div>
+                <div class="form-group mt-3">
 
-            <div class="form-group mt-3">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <button type="button" class="btn btn-primary" @onclick="@Cancel">Back to List</button>
-            </div>
+                    <MudTextField @bind-Value="person.Name" Label="Last Name" Variant="Variant.Filled" />
+                    <ValidationMessage For="() => person.Name" />
 
-        </EditForm>
+                </div>
 
-    </div>
+                <div class="form-group mt-3">
+
+                    <MudButton ButtonType="MudBlazor.ButtonType.Submit" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">Save</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Error" @onclick="@Cancel">Cancel</MudButton>
+
+                </div>
+
+            </EditForm>
+
+        </div>
+
+    </MudPaper>
 </div>
 
 @code {

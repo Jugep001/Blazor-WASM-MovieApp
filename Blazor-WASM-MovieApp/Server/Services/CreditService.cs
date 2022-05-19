@@ -136,34 +136,34 @@ namespace Blazor_WASM_MovieApp.Services
             return _creditRepository.GetCreditsByName(searchString);
         }
 
-        public List<ErrorItem> CreditExist(ICollection<Credit> credits, int personId, int functionId, string role, Credit? oldCredit)
+        public void CreditExist(ICollection<Credit> credits, int personId, int functionId, string role, Credit? oldCredit)
         {
             errors = new List<ErrorItem>();
 
             if (personId == 0)
             {
                 errors.Add(new ErrorItem("PersonId", "Keine Person ausgewählt!"));
-                return errors;
+                throw new BusinessException(errors);
             }
 
             if(functionId == 0)
             {
                 errors.Add(new ErrorItem("FunctionId", "Keine Funktion ausgewählt!"));
-                return errors;
+                throw new BusinessException(errors);
             }
 
             if (role == null && _creditRepository.GetFunction(functionId).IsRoleRequired)
             {
                 errors.Add(new ErrorItem("Role", "Bitte Rolle eingeben!"));
-                return errors;
+                throw new BusinessException(errors);
             }
 
             if (_creditRepository.CreditExist(credits, personId, functionId, role, oldCredit) == true)
             {
                 errors.Add(new ErrorItem("Credit", "Doppelter Crediteintrag!"));
-                return errors;
+                throw new BusinessException(errors);
             }
-            return errors;
+            return;
         }
 
         public List<Credit> GetCreditsFromMovie(int movieId)

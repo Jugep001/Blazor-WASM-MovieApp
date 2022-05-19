@@ -64,8 +64,11 @@
         }
 
         <div class="form-group mt-3">
-            <input type="submit" value="Save" class="btn btn-primary" />
-            <button type="button" class="btn btn-danger" @onclick="ModalInstance.CancelAsync">Cancel</button>
+
+            <MudButton ButtonType="MudBlazor.ButtonType.Submit" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">Save</MudButton>
+             <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Error" @onclick="DeleteCredit">Delete</MudButton>
+            <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Error" @onclick="ModalInstance.CancelAsync">Cancel</MudButton>
+
         </div>
 
     </EditForm>

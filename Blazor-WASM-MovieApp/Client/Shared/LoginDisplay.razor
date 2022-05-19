@@ -1,16 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 <AuthorizeView>
     <Authorized>
-        <span class="text-light">@context.User.Identity?.Name</span>
+        <span class="text-light h5 mt-2">@context.User.Identity?.Name</span>
 
-        <a class="nav-link btn btn-link text-light" href="logout"><span class="iconify" data-icon="clarity:logout-line" data-width="35" data-height="35"></span></a>
+        <a class="nav-link btn btn-link text-light h5 mt-2" href="logout"><span class="iconify" data-icon="clarity:logout-line" data-width="35" data-height="35"></span></a>
 
 
     </Authorized>
     <NotAuthorized>
-        <div class="d-inline-flex nav-item">
+        <div class="d-inline-flex nav-item h5">
 
-            <a class="text-light me-3 text-decoration-none" href="Login">Login</a>
+            <a class="text-light me-3 text-decoration-none mt-2" href="Login">Login</a>
 
         </div>
     </NotAuthorized>

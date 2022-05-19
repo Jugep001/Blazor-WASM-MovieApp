@@ -34,8 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\Blazor-WASM-MovieApp.Client.csproj" />
-    <ProjectReference Include="..\Shared\Blazor-WASM-MovieApp.Shared.csproj" />
+    <ProjectReference Include="..\Client\Blazor_WASM_MovieApp.Client.csproj" />
+    <ProjectReference Include="..\Shared\Blazor_WASM_MovieApp.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

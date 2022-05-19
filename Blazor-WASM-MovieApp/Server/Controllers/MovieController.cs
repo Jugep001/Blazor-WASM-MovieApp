@@ -243,7 +243,7 @@ namespace Blazor_WASM_MovieApp.Server.Controllers
             try
             {
                 MovieInput movieInput = JsonConvert.DeserializeObject<MovieInput>(json);
-                _movieService.AddMovie(movieInput.Movie, movieInput.Image, movieInput.GenreIds, "admin");
+                _movieService.AddMovie(movieInput.Movie, movieInput.Image, movieInput.GenreIds, movieInput.CurrentUser);
                 return Ok();
             }
             catch (BusinessException ex)
@@ -264,7 +264,7 @@ namespace Blazor_WASM_MovieApp.Server.Controllers
             try
             {
                 MovieInput movieInput = JsonConvert.DeserializeObject<MovieInput>(json);
-                _movieService.UpdateMovie(movieInput.Movie, movieInput.Image, movieInput.GenreIds, movieInput.DeleteCreditList, movieInput.ShouldDelete, "admin");
+                _movieService.UpdateMovie(movieInput.Movie, movieInput.Image, movieInput.GenreIds, movieInput.DeleteCreditList, movieInput.ShouldDelete, movieInput.CurrentUser);
                 return Ok();
             }
             catch (BusinessException ex)
@@ -297,15 +297,24 @@ namespace Blazor_WASM_MovieApp.Server.Controllers
             return Ok();
         }
 
-        [HttpGet("/CreditExist/{creditInput}")]
-        public async Task<IActionResult> CreditExist(CreditInput creditInput)
+        [HttpPost("/CreditExist")]
+        public async Task<IActionResult> CreditExist([FromBody] string json)
         {
-            List<ErrorItem> errors = _creditService.CreditExist(creditInput.Credits, creditInput.PersonId, creditInput.FunctionId, creditInput.Role, creditInput.OldCredit);
-            string json = JsonConvert.SerializeObject(errors, Formatting.Indented, new JsonSerializerSettings
+            try
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
-            return Ok(json);
+                CreditInput creditInput = JsonConvert.DeserializeObject<CreditInput>(json);
+                _creditService.CreditExist(creditInput.Credits, creditInput.PersonId, creditInput.FunctionId, creditInput.Role, creditInput.OldCredit);
+                
+            }          
+            catch (BusinessException ex)
+            {
+                string errorString = JsonConvert.SerializeObject(ex.ExceptionMessageList, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+                return BadRequest(errorString);
+            }
+            return Ok();
         }
 
         [HttpDelete("/DeleteMovie/{id}/{currentUser}")]
@@ -436,10 +445,9 @@ namespace Blazor_WASM_MovieApp.Server.Controllers
         }
 
         [HttpPut("/RestoreMovie")]
-        public async Task<IActionResult> RestoreMovie([FromBody] string json)
+        public async Task<IActionResult> RestoreMovie([FromBody] int movieId)
         {
-            Movie movie = JsonConvert.DeserializeObject<Movie>(json);
-            await _movieService.RestoreMovie(movie, "admin");
+            await _movieService.RestoreMovie(movieId, "admin");
             return Ok();
         }
 

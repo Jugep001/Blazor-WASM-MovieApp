@@ -1,10 +1,15 @@
 ﻿@using Blazor_WASM_MovieApp.Exceptions
+@using MudBlazor
 @implements IErrorComponent
 @inherits LayoutComponentBase
 
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 <NavMenu />
 
-<main class="container-fluid">
+
+<main class="container-fluid h-100 text-white" style="background-color:#1f1e1e">
     <div class="content px-4">
         @if (isErrorActive)
         {
@@ -25,11 +30,14 @@
             </div>
         }
         <CascadingValue Value="this" Name="ErrorComponent">
-                @Body
+            @Body
         </CascadingValue>
+
     </div>
 
 </main>
+
+
 
 
 

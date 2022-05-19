@@ -28,27 +28,36 @@
     </div>
 }
 
-<div class="d-flex justify-content-center">
+<div class="container-fluid d-flex justify-content-center">
+    <MudPaper Style="@("background: #FFFFFF")" Class="py-16 d-inline-flex justify-content-center" Width="75%">
 
-    <div class="col-md-4 ">
-        <EditForm Model="genre" OnValidSubmit="AddGenre">
-            <FluentValidationValidator />
 
-            <div class="form-group mt-3">
-                <label class="control-label">Name</label>
-                <InputText @bind-Value="genre.Name" class="form-control" />
-                <ValidationMessage For="() => genre.Name" />
 
-            </div>
+        <div class="col-md-4 ">
+            <EditForm Model="genre" OnValidSubmit="AddGenre">
 
-            <div class="form-group mt-3">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <button type="button" class="btn btn-primary" @onclick="@Cancel">Back to List</button>
-            </div>
+                <FluentValidationValidator />
 
-        </EditForm>
 
-    </div>
+
+                <div class="form-group mt-3 col">
+
+                    <MudTextField @bind-Value="genre.Name" Label="Name" Variant="Variant.Filled" />
+                    <ValidationMessage For="() => genre.Name" />
+
+                </div>
+
+                <div class="form-group mt-3">
+
+                    <MudButton ButtonType="MudBlazor.ButtonType.Submit" Variant="Variant.Filled" Color="MudBlazor.Color.Primary">Save</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Error" @onclick="@Cancel">Cancel</MudButton>
+
+                </div>
+
+            </EditForm>
+
+        </div>
+    </MudPaper>
 </div>
 
 @code {

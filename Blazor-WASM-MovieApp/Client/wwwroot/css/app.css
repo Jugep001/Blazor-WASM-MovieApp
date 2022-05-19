@@ -4,17 +4,17 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+
 h1:focus {
     outline: none;
 }
 
 a, .btn-link {
-    color: #0077cc;
+    color: #70a7f1;
+    text-decoration: none;
+
 }
 
-.link-hover:hover {
-    color: blue;
-}
 
 .btn-primary {
     color: #fff;
@@ -72,23 +72,15 @@ a, .btn-link {
 }
 
 .scrollable-div-create {
-    border: 2px solid #ccc;
     height: 100px;
     padding-bottom: 81%;
-    overflow-y: auto;
+    overflow-y: inherit;
 }
 
 .scrollable-div-edit {
-    border: 2px solid #ccc;
     height: 100px;
     padding-bottom: 75%;
-    overflow-y: auto;
-}
-
-.scrollable-editor {
-    height: 100%;
-    min-height: 100%;
-    overflow-y: auto;
+    overflow-y: inherit;
 }
 
 .thumbnail {
@@ -179,10 +171,8 @@ a, .btn-link {
 
 .center {
     position: absolute;
-    left: 65%;
-    top: 40%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+    left: 42%;
+    top: 200%;
     width: 50%
 }
 
@@ -200,4 +190,27 @@ a, .btn-link {
             border: medium none;
             border-radius: 0;
             color: #fff;
+        }
+
+
+.box {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+    .box .row {
+        border: 1px dotted grey;
+    }
+
+        .box .row.header {
+            flex: 0 1 auto;
+        }
+
+        .box .row.content {
+            flex: 1 1 auto;
+        }
+
+        .box .row.footer {
+            flex: 0 1 40px;
         }

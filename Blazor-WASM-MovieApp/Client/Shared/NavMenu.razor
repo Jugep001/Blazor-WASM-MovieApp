@@ -1,13 +1,13 @@
 ﻿@using Blazor_WASM_MovieApp.Models
-<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+<nav class="navbar navbar-expand-md navbar-dark" style="background-color:#1f1e1e">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">Blazor-Movie-App</a>
+        <a class="navbar-brand h5" href="">Blazor-Movie-App</a>
         <button class="navbar-toggler @NavButtonCssClass" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-label="Toggle navigation" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse @NavBarCssClass" id="navbarCollapse" @onclick="ToggleNavMenu">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <div class="collapse navbar-collapse h5 @NavBarCssClass" id="navbarCollapse" @onclick="ToggleNavMenu">
+            <ul class="navbar-nav me-auto mb-md-0">
                 <li class="nav-item">
                     <NavLink class="nav-link" Match="NavLinkMatch.All" @onclick="HandleClickIndex">
                         <span class="iconify-inline" data-icon="bx:camera-movie" style="font-size: 24px;"></span>Movies
@@ -34,30 +34,30 @@
 
         </div>
 
-    </div>
-
+    
+    
     <LoginDisplay />
 
 
 
     <EditForm Model="search" OnSubmit="HandleSubmit">
         <AuthorizeView Roles="admin, writer, reader" Context="authContext">
-            <div class="d-flex me-3">
-                <div class="">
+            <div class="d-inline-flex me-2">
+                <div class="mb-5 me-2">
 
-                    <InputText type="text" class="form-control-sm" name="searchString" placeholder="Search" @bind-Value="search.SearchString" />
+                    <MudTextField type="text" Label="Search" Style="@($"background:#FFFFFF")" @bind-Value="search.SearchString" />
 
                 </div>
 
-                <div>
-                    <input type="submit" value="Search" class="btn-sm btn-secondary ms-1" />
+                <div class="mt-5">
+                    <MudButton ButtonType="MudBlazor.ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" >Search</MudButton>
                 </div>
 
 
             </div>
         </AuthorizeView>
     </EditForm>
-
+    </div>
 
 
 </nav>

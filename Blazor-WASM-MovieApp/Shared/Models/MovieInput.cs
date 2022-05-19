@@ -15,6 +15,7 @@ namespace Blazor_WASM_MovieApp.Shared.Models
         public Image? Image { get; set; }
         public List<int> GenreIds { get; set; }
         public List<Credit> DeleteCreditList { get; set; }
+        public string? CurrentUser { get; set; }
         public bool ShouldDelete { get; set; }
 
     }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components;
 using Blazor_WASM_MovieApp.Exceptions;
 using Blazor_WASM_MovieApp.Client.Services;
 using Blazor_WASM_MovieApp.Models;
+using MudBlazor;
 
 namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
 {
@@ -60,7 +61,33 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
         protected SearchPeople searchPeople = new SearchPeople();
         protected Movie movie = new Movie();
         protected List<Credit> creditList = new List<Credit>();
+        protected MudDropContainer<DropItem> _container;
 
+        protected List<DropItem> _items = new List<DropItem>();
+
+
+        protected class DropItem
+        {
+            public int? Id { get; set; }
+
+            public int? MovieId { get; set; }
+            public virtual Movie? Movie { get; set; }
+
+            public int PersonId { get; set; }
+            public virtual Person? Person { get; set; }
+
+            public int FunctionId { get; set; }
+            public virtual Function? Function { get; set; }
+
+            public string? Role { get; set; }
+
+            public int Order { get; set; }
+            public string? Identifier { get; set; } = "1";
+
+            public bool IsDragOver { get; set; }
+
+            public string Name { get; set; }
+        }
 
         protected override async Task OnInitializedAsync()
         {
@@ -71,7 +98,12 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
 
                 movie = await _movieService.GetMovie(Id);
                 genres = await _genreService.GetGenres();
-                creditList = new List<Credit>(movie.Credits.OrderBy(x => x.Position));
+                creditList = new List<Credit>(movie.Credits.OrderBy(x => x.Order));
+                foreach(var credit in creditList)
+                {
+                    AddToItems(credit);
+                }
+                RefreshContainer();
 
                 HtmlString = (MarkupString)movie.Description;
 
@@ -137,8 +169,8 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
                 {
                     movie.Description = StripHTML(movie.Description);
                 }
-                //var authstate = await _getAuthenticationState.GetAuthenticationStateAsync();
-                var response = await _movieService.UpdateMovie(movie, loadedImage, loadedThumbnailImage, GenreIds, DeleteCreditList, shouldDelete, "admin");
+                var authstate = await _getAuthenticationState.GetAuthenticationStateAsync();
+                var response = await _movieService.UpdateMovie(movie, loadedImage, loadedThumbnailImage, GenreIds, DeleteCreditList, shouldDelete, authstate.User.Identity.Name);
                 
                 ErrorComponent.HideError();
                 _navigationManager.NavigateTo("");
@@ -154,30 +186,62 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
 
         }
 
-        protected void SetIndex(Credit credit)
+        protected void AddToItems(Credit credit)
         {
-            currentIndex = creditList.FindIndex(x => x.Position == credit.Position);
-            Refresh();
+            _items.Add(new DropItem
+            {
+                Id = credit.Id,
+                MovieId = credit.MovieId,
+                PersonId = credit.PersonId,
+                FunctionId = credit.FunctionId,
+                Role = credit.Role,
+                Identifier = credit.Identifier,
+                Function = credit.Function,
+                Person = credit.Person,
+                Movie = credit.Movie,
+                Order = credit.Order,
+
+            });
+            RefreshContainer();
         }
 
-        protected void Drop(Credit credit)
+
+        protected void Drop(MudItemDropInfo<DropItem> credit)
         {
-            var tempPos = credit.Position;
-            var dropIndex = creditList.FindIndex(x => x.Position == credit.Position);
-            var currentCredit = creditList[currentIndex];
-            creditList.RemoveAt(currentIndex);
-            creditList.Insert(dropIndex, currentCredit);
+            currentIndex = _items.FindIndex(x => x.Order == credit.Item.Order);
+            _items.RemoveAt(currentIndex);
+            _items.Insert(credit.IndexInZone, credit.Item);
+
+
 
             int i = 0;
-            foreach (var creditEntry in creditList)
+            creditList.Clear();
+            foreach (var itemEntry in _items)
             {
-                creditEntry.Position = i;
+                itemEntry.Order = i;
                 i++;
+                creditList.Add(new Credit
+                {
+                    Id = itemEntry.Id,
+                    MovieId = itemEntry.MovieId,
+                    Movie = itemEntry.Movie,
+                    PersonId = itemEntry.PersonId,
+                    Person = itemEntry.Person,
+                    FunctionId = itemEntry.FunctionId,
+                    Function = itemEntry.Function,
+                    Role = itemEntry.Role,
+                    Order = itemEntry.Order,
+                    Identifier = itemEntry.Identifier,
+                });
             }
-            Refresh();
 
+
+            RefreshContainer();
+            
+            
 
         }
+
 
         protected async void LoadImage(InputFileChangeEventArgs e)
         {
@@ -220,6 +284,17 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
             Refresh();
         }
 
+        protected async void AddDescription()
+        {
+            var parameters = new ModalParameters();
+            parameters.Add("MovieDescription", movie.Description);
+            IModalReference? formModal = Modal.Show<AddDescriptionComponent>("Add Description", parameters);
+            ModalResult? result = await formModal.Result;
+            if (!result.Cancelled)
+            {
+                movie.Description = (string)result.Data;              
+            }
+        }
         protected async void ShowAddCredit()
         {
             var parameters = new ModalParameters();
@@ -234,22 +309,36 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
                 credit.MovieId = Id;
                 if (creditList.Count == 0)
                 {
-                    credit.Position = 0;
+                    credit.Order = 0;
                 }
                 if (creditList.Count > 0)
                 {
-                    credit.Position = creditList.MaxBy(x => x.Position).Position + 1;
-                }              
+                    credit.Order = creditList.MaxBy(x => x.Order).Order + 1;
+                }  
+                AddToItems(credit);
                 creditList.Add(credit);
-                Refresh();
+                RefreshContainer();
             }
 
 
         }
 
-        protected async void ShowEditCredit(Credit creditEdit)
+        protected async void ShowEditCredit(DropItem DropItemEdit)
         {
+            Credit? creditEdit = new Credit
+            {
+                Id = DropItemEdit.Id,
+                MovieId = DropItemEdit.MovieId,
+                Movie = DropItemEdit.Movie,
+                PersonId = DropItemEdit.PersonId,
+                Person = DropItemEdit.Person,
+                FunctionId = DropItemEdit.FunctionId,
+                Function = DropItemEdit.Function,
+                Role = DropItemEdit.Role,
+                Order = DropItemEdit.Order,
+                Identifier = DropItemEdit.Identifier,
 
+            };
             var parameters = new ModalParameters();
             parameters.Add("CreditList", creditList);
             parameters.Add("OldCredit", creditEdit);
@@ -259,24 +348,36 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
             if (!result.Cancelled)
             {
                 Credit credit = (Credit)result.Data;
+                if(credit.ShouldDelete == true)
+                {
+                    creditList.Remove(creditEdit);
+                    _items.Remove(DropItemEdit);
+                    DeleteCreditList.Add(creditEdit);
+                    RefreshContainer();
+                    return;
+                }
                 credit.Person = await _personService.GetPerson(credit.PersonId);
                 credit.Function = await _creditService.GetFunction(credit.FunctionId);
                 credit.MovieId = Id;
+                credit.Order = creditEdit.Order;
                 creditList.Remove(creditEdit);
+                _items.Remove(DropItemEdit);
                 DeleteCreditList.Add(creditEdit);
                 creditList.Add(credit);
-                Refresh();
+                AddToItems(credit);
+                RefreshContainer();
+
             }
 
 
         }
 
-        protected void DeleteCredit(Credit credit)
+           
+
+        private void RefreshContainer()
         {
-            ErrorComponent.HideError();
-            creditList.Remove(credit);
-            DeleteCreditList.Add(credit);
-            Refresh();
+            StateHasChanged();
+            _container.Refresh();
         }
 
         protected async void HandleCreditSubmit()
@@ -307,7 +408,7 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
 
         public async Task RestoreMovie()
         {
-            await _movieService.RestoreMovie(movie, "");
+            await _movieService.RestoreMovie(movie, "Admin");
             _navigationManager.NavigateTo("");
         }
 

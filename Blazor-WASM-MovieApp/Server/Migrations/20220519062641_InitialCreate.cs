@@ -295,7 +295,9 @@ namespace BlazorWASMMovieApp.Server.Migrations
                     PersonId = table.Column<int>(type: "int", nullable: false),
                     FunctionId = table.Column<int>(type: "int", nullable: false),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Position = table.Column<int>(type: "int", nullable: true),
+                    Order = table.Column<int>(type: "int", nullable: false),
+                    Identifier = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShouldDelete = table.Column<bool>(type: "bit", nullable: false),
                     IsDragOver = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

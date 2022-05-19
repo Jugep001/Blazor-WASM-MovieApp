@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor-WASM-MovieApp.Server", "Blazor-WASM-MovieApp\Server\Blazor-WASM-MovieApp.Server.csproj", "{7ACCC022-65EE-478A-B30F-CA3A976A553C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor_WASM_MovieApp.Server", "Blazor-WASM-MovieApp\Server\Blazor_WASM_MovieApp.Server.csproj", "{7ACCC022-65EE-478A-B30F-CA3A976A553C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor-WASM-MovieApp.Client", "Blazor-WASM-MovieApp\Client\Blazor-WASM-MovieApp.Client.csproj", "{54733FC4-4051-44D9-BDDA-5C091573B75C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor_WASM_MovieApp.Client", "Blazor-WASM-MovieApp\Client\Blazor_WASM_MovieApp.Client.csproj", "{54733FC4-4051-44D9-BDDA-5C091573B75C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor-WASM-MovieApp.Shared", "Blazor-WASM-MovieApp\Shared\Blazor-WASM-MovieApp.Shared.csproj", "{9DB89BB3-DDB7-4854-959E-A71C8B1D268F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor_WASM_MovieApp.Shared", "Blazor-WASM-MovieApp\Shared\Blazor_WASM_MovieApp.Shared.csproj", "{9DB89BB3-DDB7-4854-959E-A71C8B1D268F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

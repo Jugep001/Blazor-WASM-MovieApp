@@ -198,17 +198,17 @@ namespace Blazor_WASM_MovieApp.Services
             return _movieRepository.GetFirstTenWords(description);
         }
 
-        public async Task RestoreMovie(Movie movie, string currentUser)
+        public async Task RestoreMovie(int movieId, string currentUser)
         {
-            errors = new List<ErrorItem>();
+            //errors = new List<ErrorItem>();
 
-            if (_movieRepository.MovieExist(movie.Title, movie.ReleaseDate.Value, movie.Id))
-            {
-                errors.Add(new ErrorItem("Title", "Dieser Film existiert bereits!"));
-                throw new BusinessException(errors);
-            }
+            //if (_movieRepository.MovieExist(movie.Title, movie.ReleaseDate.Value, movie.Id))
+            //{
+            //    errors.Add(new ErrorItem("Title", "Dieser Film existiert bereits!"));
+            //    throw new BusinessException(errors);
+            //}
 
-            _movieRepository.RestoreMovie(movie,currentUser);
+            _movieRepository.RestoreMovie(movieId, currentUser);
         }
 
 

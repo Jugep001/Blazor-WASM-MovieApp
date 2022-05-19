@@ -101,7 +101,6 @@ namespace Blazor_WASM_MovieApp.Repositories
                 return creditQueryTemp
                 .Where(credit => credit.PersonId == personId)
                 .Where(credit => credit.FunctionId == functionId)
-                .Where(credit => credit.Role == role)
                 .Any();
             }
 
@@ -110,7 +109,6 @@ namespace Blazor_WASM_MovieApp.Repositories
             return creditQuery
            .Where(credit => credit.PersonId == personId)
            .Where(credit => credit.FunctionId == functionId)
-           .Where(credit => credit.Role == role)
            .Any();
 
 
@@ -138,7 +136,7 @@ namespace Blazor_WASM_MovieApp.Repositories
         {
             var Query = from credits in _dbContext.Credits where credits.MovieId == movieId select credits;
             Query = Query.Include(credit => credit.Person).Include(credit => credit.Function);
-            Query = Query.OrderBy(x => x.Function.FunctionName).ThenBy(x => x.Position);
+            Query = Query.OrderBy(x => x.Function.FunctionName).ThenBy(x => x.Order);
             return Query.ToList();
         }
 

@@ -46,7 +46,7 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
             {
                 await _genreService.UpdateGenre(genre);
                 ErrorComponent.HideError();
-                _navigationManager.NavigateTo("/genreIndex", true);
+                _navigationManager.NavigateTo("/genreIndex");
             }
             catch (BusinessException ex)
             {
@@ -65,7 +65,7 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
         protected void Cancel()
         {
 
-            _navigationManager.NavigateTo("/genreIndex", true);
+            _navigationManager.NavigateTo("/genreIndex");
             ErrorComponent.HideError();
 
         }

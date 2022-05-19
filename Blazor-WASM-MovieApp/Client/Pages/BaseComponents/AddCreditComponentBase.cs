@@ -54,7 +54,7 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
         }
 
 
-        protected async void CreateCredit()
+        protected async Task CreateCredit()
         {
             try
             {
@@ -66,7 +66,7 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
                 {
                     credit.Role = null;
                 }
-                _creditService.CreditExist(CreditList, credit.PersonId, credit.FunctionId, credit.Role, null);
+                await _creditService.CreditExist(CreditList, credit.PersonId, credit.FunctionId, credit.Role, null);
                 shouldRender = true;
                 ModalInstance.CloseAsync(ModalResult.Ok(credit));
                 return;

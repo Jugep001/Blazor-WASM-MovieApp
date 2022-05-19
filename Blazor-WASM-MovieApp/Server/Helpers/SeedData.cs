@@ -243,19 +243,19 @@ namespace Blazor_WASM_MovieApp.Models
                             {
                                 Function = Schnitt,
                                 Person = Lucas,
-                                Position = 0
+                                Order = 0
                             },
                             new Credit()
                             {
                                 Function = Buch,
                                 Person = Bay,
-                                Position = 1
+                                Order = 1
                             },
                             new Credit()
                             {
                                 Function = Regie,
                                 Person = Cruise,
-                                Position = 2
+                                Order = 2
                             }
 
                                 }
@@ -277,19 +277,19 @@ namespace Blazor_WASM_MovieApp.Models
                             {
                                 Function = Schnitt,
                                 Person = Lucas,
-                                Position = 0
+                                Order = 0
                             },
                             new Credit()
                             {
                                 Function = Buch,
                                 Person = Bay,
-                                Position = 1
+                                Order = 1
                             },
                             new Credit()
                             {
                                 Function = Regie,
                                 Person = Cruise,
-                                Position = 2
+                                Order = 2
                             }
 
                                 }
@@ -312,19 +312,19 @@ namespace Blazor_WASM_MovieApp.Models
                             {
                                 Function = Schnitt,
                                 Person = Lucas,
-                                Position = 0
+                                Order = 0
                             },
                             new Credit()
                             {
                                 Function = Buch,
                                 Person = Bay,
-                                Position = 1
+                                Order = 1
                             },
                             new Credit()
                             {
                                 Function = Regie,
                                 Person = Cruise,
-                                Position = 2
+                                Order = 2
                             }
 
                                 }
@@ -348,19 +348,19 @@ namespace Blazor_WASM_MovieApp.Models
                             {
                                 Function = Schnitt,
                                 Person = Lucas,
-                                Position = 0
+                                Order = 0
                             },
                             new Credit()
                             {
                                 Function = Buch,
                                 Person = Bay,
-                                Position = 1
+                                Order = 1
                             },
                             new Credit()
                             {
                                 Function = Regie,
                                 Person = Cruise,
-                                Position = 2
+                                Order = 2
                             }
 
                                 }

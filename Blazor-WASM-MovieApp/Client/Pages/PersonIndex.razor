@@ -8,7 +8,7 @@
 
     <div class="pl-2 ">
         <div class="float-start mt-2">
-            <a class="btn btn-primary" href="createPerson">Add Person</a>
+            <MudButton Href="createPerson" Variant="Variant.Filled" Color="Color.Primary"> Add Person  </MudButton>
         </div>
 
         <EditForm Model="searchPeople" OnSubmit="HandleSubmit">
@@ -64,7 +64,7 @@
                         <div class="span2">
 
                             <a class="btn btn-outline-primary" href="editPerson/@item.Id">Edit</a>
-                            <a class="btn btn-outline-primary" href="deletePerson/@item.Id">Delete</a>
+                            <a class="btn btn-outline-danger" href="deletePerson/@item.Id">Delete</a>
 
                         </div>
 

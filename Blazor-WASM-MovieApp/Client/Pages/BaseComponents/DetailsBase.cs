@@ -84,6 +84,11 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
             _navigationManager.NavigateTo("");
         }
 
+        protected void ChangeToEdit(Movie movie)
+        {
+            _navigationManager.NavigateTo($"edit/{movie.Id}");
+        }
+
         protected void ChangeToDetail()
         {
             isDetail = true;

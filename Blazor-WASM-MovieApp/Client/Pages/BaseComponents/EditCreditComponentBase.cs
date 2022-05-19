@@ -63,7 +63,7 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
         }
 
 
-        protected async void CreateCredit()
+        protected async Task CreateCredit()
         {
             try
             {
@@ -75,7 +75,7 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
                 {
                     credit.Role = null;
                 }
-                _creditService.CreditExist(CreditList, credit.PersonId, credit.FunctionId, credit.Role, OldCredit);
+                await _creditService.CreditExist(CreditList, credit.PersonId, credit.FunctionId, credit.Role, OldCredit);
                 shouldRender = true;
                 ModalInstance.CloseAsync(ModalResult.Ok(credit));
                 return;
@@ -91,6 +91,27 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
             }
 
 
+        }
+
+        protected async void DeleteCredit()
+        {
+            try
+            {
+                ErrorList.Clear();
+                credit.ShouldDelete = true;
+                shouldRender = true;
+                ModalInstance.CloseAsync(ModalResult.Ok(credit));
+                return;
+
+            }
+            catch (BusinessException ex)
+            {
+
+                ErrorList = ex.ExceptionMessageList;
+                isErrorActive = true;
+                shouldRender = true;
+
+            }
         }
 
         protected async Task GetRoleRequired()

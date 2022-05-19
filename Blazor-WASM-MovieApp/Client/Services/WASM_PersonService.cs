@@ -75,6 +75,12 @@ namespace Blazor_WASM_MovieApp.Client.Services
 
         public async Task<Person> GetPersonByName(string name)
         {
+            if(name == null || name == "")
+            {
+                List<ErrorItem> errors = new List<ErrorItem>();
+                errors.Add(new ErrorItem("Name", "Fehlende Person!"));
+                throw new BusinessException(errors);
+            }
             var json = await _httpClient.GetStringAsync($"/GetPersonByName/{name}");
             Person person = JsonConvert.DeserializeObject<Person>(json);
             return person;

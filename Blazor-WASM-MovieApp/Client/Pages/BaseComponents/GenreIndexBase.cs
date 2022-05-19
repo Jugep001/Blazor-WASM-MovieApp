@@ -2,6 +2,7 @@
 using Blazor_WASM_MovieApp.Exceptions;
 using Blazor_WASM_MovieApp.Models;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
 {
@@ -20,6 +21,7 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
         protected List<Genre> genres;
         protected List<ErrorItem> ErrorList = new List<ErrorItem>();
         protected bool shouldRender = true;
+        protected MudTable<Genre> table;
 
         protected override async Task OnInitializedAsync()
         {

@@ -1,57 +1,60 @@
 ﻿@page "/Register"
 @using Blazor_WASM_MovieApp.Client.Pages.BaseComponents
+@using Blazor_WASM_MovieApp.Validators
 @using Blazored.FluentValidation
 @inherits RegisterBase
 
-<div class="center">
+<div class="d-flex justify-content-center">
     <div class="col-md-4">
         <EditForm Model="authInput" OnValidSubmit="AddUser">
-           @* <FluentValidationValidator />*@
+            <FluentValidationValidator />
             <div>
-                <h3 class="ms-3">Create a new account</h3>
+                <h3 class="text-center">Create a new account</h3>
             </div>
 
             <hr />
-            <div class="form-floating">
-                <InputText @bind-Value="authInput.Username" class="form-control" autocomplete="username" />
-                <ValidationMessage For="() => authInput.Username" />
-                <label>Username</label>
+            <MudPaper Class="pa-4" Style="@($"background:#e0dada;")">
+                <div class="form-floating">
+                    <MudTextField @bind-Value="authInput.Username" Clearable="true" Label="Username" Variant="Variant.Filled" Style="@($"background:#e0dada;")" />
+                    <ValidationMessage For="() => authInput.Username" />
 
-            </div>
-            <div class="form-floating">
-                <InputText @bind-Value="authInput.Email" class="form-control" autocomplete="email" />
-                <ValidationMessage For="() => authInput.Email" />
-                <label>Email</label>
+                </div>
+                <div class="form-floating">
+                    <MudTextField @bind-Value="authInput.Email" Clearable="true" Label="Email" Variant="Variant.Filled" Style="@($"background:#e0dada;")" />
+                    <ValidationMessage For="() => authInput.Email" />
 
-            </div>
-            <div class="form-floating">
-                <InputText @bind-Value="authInput.PhoneNumber" class="form-control" autocomplete="phoneNumber" />
-                <ValidationMessage For="() => authInput.PhoneNumber" />
-                <label>PhoneNumber</label>
+                </div>
+                <div class="form-floating">
+                    <MudTextField @bind-Value="authInput.PhoneNumber" Clearable="true" Label="Phone number" Variant="Variant.Filled" Style="@($"background:#e0dada;")" />
+                    <ValidationMessage For="() => authInput.PhoneNumber" />
 
-            </div>
-            <div class="form-floating">
-                <InputText type="password" @bind-Value="authInput.Password" class="form-control" autocomplete="new-password" />
-                <ValidationMessage For="() => authInput.Password" />
-                <label>Password</label>
+                </div>
+                <div class="form-floating">
+                    <MudTextField InputType="@PasswordInput" Clearable="true" @bind-Value="authInput.Password" Label="Password" Variant="Variant.Filled" Style="@($"background:#e0dada;")"  />
+                    <ValidationMessage For="() => authInput.Password" />
 
-            </div>
-            <div class="form-floating">
-                <InputText type="password" @bind-Value="authInput.ConfirmPassword" class="form-control" autocomplete="new-password" />
-                <ValidationMessage For="() => authInput.ConfirmPassword" />
-                <label>Confirm Password</label>
+                </div>
+                <div class="form-floating">
+                    <MudTextField InputType="@PasswordInput" Clearable="true" @bind-Value="authInput.ConfirmPassword" Label="Confirm Password" Variant="Variant.Filled" Style="@($"background:#e0dada;")" />
+                    <ValidationMessage For="() => authInput.ConfirmPassword" />
 
-            </div>
-            <div class="form-floating">
-                <InputSelect @bind-Value="Role" class="form-control">
-                    <option value="reader" selected>Reader</option>
-                    <option value="writer">Writer</option>
-                </InputSelect>
-                <label>Role</label>
-            </div>
-            <div class="d-flex mt-3">
-                <input type="submit" value="Register" class="btn btn-primary" />
-                <a href="/" type="submit" class="w-50 btn btn-lg btn-danger">Cancel</a>
+                </div>
+                <div class="form-floating">
+
+                    <MudSelect T="string" @bind-Value="Role" Label="Rating" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+
+                        <MudSelectItem Value="@("reader")">Reader</MudSelectItem>
+                        <MudSelectItem Value="@("writer")">Writer</MudSelectItem>
+
+                    </MudSelect>
+
+                </div>
+            </MudPaper>
+            <div class="d-flex mt-3 justify-content-center">
+
+                <MudButton ButtonType="MudBlazor.ButtonType.Submit" Class="btn btn-primary me-4" Variant="Variant.Filled" Color="Color.Primary" >Register</MudButton>
+                <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Error" Href="/">Cancel</MudButton>
+
             </div>
         </EditForm>
     </div>
@@ -59,5 +62,5 @@
 </div>
 
 @code {
-
+    InputType PasswordInput = InputType.Password;
 }

@@ -55,10 +55,15 @@ namespace Blazor_WASM_MovieApp.Client.Services
                 Role = role,
                 OldCredit = oldCredit
             };
-            var json = await _httpClient.GetStringAsync($"/CreditExist/{creditInput}");
-            List<ErrorItem> errors = JsonConvert.DeserializeObject<List<ErrorItem>>(json);
-            if(errors.Count > 0)
+            string json = JsonConvert.SerializeObject(creditInput, Formatting.Indented, new JsonSerializerSettings
             {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            var response = await _httpClient.PostAsJsonAsync($"/CreditExist",json);
+            var responseMessage = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                List<ErrorItem> errors = JsonConvert.DeserializeObject<List<ErrorItem>>(responseMessage);
                 throw new BusinessException(errors);
             }
         }
