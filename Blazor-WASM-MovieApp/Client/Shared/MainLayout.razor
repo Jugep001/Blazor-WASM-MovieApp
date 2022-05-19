@@ -3,41 +3,40 @@
 @implements IErrorComponent
 @inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider/>
 <MudDialogProvider />
 <MudSnackbarProvider />
 <NavMenu />
 
+<MudLayout>
+    <MudMainContent Class="container-fluid h-100 text-white">
+            <div class="content px-4">
+                @if (isErrorActive)
+                {
+                    <div class="alert alert-danger" role="alert">
 
-<main class="container-fluid h-100 text-white" style="background-color:#1f1e1e">
-    <div class="content px-4">
-        @if (isErrorActive)
-        {
-            <div class="alert alert-danger" role="alert">
+                        <ul>
+                            @foreach (var err in ErrorList)
+                            {
+                                <li>
 
-                <ul>
-                    @foreach (var err in ErrorList)
-                    {
-                        <li>
+                                    <p>@err.ErrorMessage</p>
 
-                            <p>@err.ErrorMessage</p>
+                                </li>
 
-                        </li>
+                            }
+                        </ul>
 
-                    }
-                </ul>
+                    </div>
+                }
+                <CascadingValue Value="this" Name="ErrorComponent">
+                    @Body
+                </CascadingValue>
 
             </div>
-        }
-        <CascadingValue Value="this" Name="ErrorComponent">
-            @Body
-        </CascadingValue>
 
-    </div>
-
-</main>
-
-
+    </MudMainContent>
+</MudLayout>
 
 
 
@@ -47,6 +46,8 @@
     bool isErrorActive;
     List<ErrorItem> ErrorList;
     string? message = null;
+
+   
 
 
     public void ShowError(List<ErrorItem> ErrorList)

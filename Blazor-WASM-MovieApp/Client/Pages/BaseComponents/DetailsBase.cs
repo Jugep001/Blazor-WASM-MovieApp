@@ -4,6 +4,7 @@ using Blazor_WASM_MovieApp.Client.Services;
 using Blazor_WASM_MovieApp.Exceptions;
 using Blazor_WASM_MovieApp.Models;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
 {
@@ -20,6 +21,9 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
 
         [Inject]
         protected WASM_IMovieService _movieService { get; set; }
+
+        [Inject]
+        protected IDialogService Dialog { get; set; }
 
         [Inject]
         protected WASM_ICreditService _creditService { get; set; }
@@ -58,25 +62,32 @@ namespace Blazor_WASM_MovieApp.Client.Pages.BaseComponents
 
         }
 
-        protected async void DeleteMovie()
+        protected async Task OpenDeleteDialog()
         {
-            try
+
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+            var dialog = Dialog.Show<DeleteDialog>("Delete Movie", options);
+            var result = await dialog.Result;
+
+            if (!result.Cancelled)
             {
+                try
+                {
 
-                await _movieService.DeleteMovie(Id, "admin");
-                shouldRender = true;
-                _navigationManager.NavigateTo("");
+                    await _movieService.DeleteMovie(Id, "admin");
+                    shouldRender = true;
+                    _navigationManager.NavigateTo("");
+                }
+                catch (BusinessException ex)
+                {
+
+                    ErrorList = ex.ExceptionMessageList;
+                    ErrorComponent.ShowError(ErrorList);
+                    shouldRender = true;
+
+                }
             }
-            catch (BusinessException ex)
-            {
-
-                ErrorList = ex.ExceptionMessageList;
-                ErrorComponent.ShowError(ErrorList);
-                shouldRender = true;
-
-            }
-
-
         }
 
         protected void Cancel()
